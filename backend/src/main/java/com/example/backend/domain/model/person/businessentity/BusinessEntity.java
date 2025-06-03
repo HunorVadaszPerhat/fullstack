@@ -23,7 +23,7 @@ public class BusinessEntity {
 
     @Column(name = "rowguid", nullable = false, unique = true)
     private UUID rowguid;
-    
+
     @Column(name = "ModifiedDate", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date modifiedDate;
