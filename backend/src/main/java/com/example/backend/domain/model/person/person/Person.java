@@ -70,7 +70,7 @@ public class Person {
     @Column(name = "Demographics", columnDefinition = "xml")
     private String demographics;
 
-    @Column(name = "rowguid", nullable = false, unique = true)
+    @Column(name = "rowguid", nullable = false, columnDefinition = "uniqueidentifier default newid()")
     private UUID rowguid;
 
     @Column(name = "ModifiedDate", nullable = false)
