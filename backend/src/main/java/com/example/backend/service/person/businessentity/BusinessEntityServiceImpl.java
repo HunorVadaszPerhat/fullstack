@@ -1,7 +1,7 @@
 package com.example.backend.service.person.businessentity;
 
 import com.example.backend.domain.model.person.businessentity.BusinessEntity;
-import com.example.backend.domain.repository.person.BusinessEntityRepository;
+import com.example.backend.domain.repository.person.businessentity.BusinessEntityRepository;
 import com.example.backend.dto.person.businessentity.BusinessEntityDto;
 import com.example.backend.mapper.person.businessentity.BusinessEntityMapper;
 import jakarta.persistence.EntityNotFoundException;
