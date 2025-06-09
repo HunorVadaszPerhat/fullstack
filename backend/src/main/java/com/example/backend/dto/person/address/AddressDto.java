@@ -1,5 +1,6 @@
 package com.example.backend.dto.person.address;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.util.Date;
@@ -49,11 +50,13 @@ public class AddressDto {
     /**
      * Spatial/geographic location (optional: refine type based on use case).
      */
+    @Schema(hidden = true)
     private Object spatialLocation;
 
     /**
      * Unique identifier for this address.
      */
+    @Schema(hidden = true)
     private UUID rowguid;
 
     /**

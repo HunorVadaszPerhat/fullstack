@@ -1,5 +1,6 @@
 package com.example.backend.dto.person.businessentity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +17,7 @@ import java.util.UUID;
 public class BusinessEntityDto {
     private Integer businessEntityID;
     @NotNull(message = "rowguid is required")
+    @Schema(hidden = true)
     private UUID rowguid;
 
     @NotNull(message = "Modified date is required")

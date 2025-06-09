@@ -1,0 +1,86 @@
+spring:
+  application:
+    name: backend
+
+#  cache:
+#    type: redis
+#    cache-names:
+#      - addresses
+#      - searchAddresses
+
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=adventureworks;encrypt=true;trustServerCertificate=true
+    username: sa
+    password: StrongPassword123!
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServerDialect
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: backend-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+#  data:
+#    redis:
+#      host: localhost
+#      port: 6379
+
+server:
+  port: 8888
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+    org.springframework.cache: DEBUG
+    org.springframework.data.redis.cache: DEBUG
+
+management:
+  server:
+    port: 1112
+
+  endpoints:
+    web:
+      exposure:
+        include: health, metrics, prometheus
+
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+  health:
+    redis:
+      enabled: false
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
