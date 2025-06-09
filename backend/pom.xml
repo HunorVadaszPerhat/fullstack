@@ -164,6 +164,9 @@
 							<version>1.5.5.Final</version>
 						</path>
 					</annotationProcessorPaths>
+					<source>21</source>
+					<target>21</target>
+					<compilerArgs>--enable-preview</compilerArgs>
 				</configuration>
 			</plugin>
 
