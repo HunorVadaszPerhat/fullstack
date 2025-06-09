@@ -2,11 +2,11 @@ spring:
   application:
     name: backend
 
-  cache:
-    type: redis
-    cache-names:
-      - addresses
-      - searchAddresses
+#  cache:
+#    type: redis
+#    cache-names:
+#      - addresses
+#      - searchAddresses
 
   datasource:
     url: jdbc:sqlserver://localhost:1433;databaseName=adventureworks;encrypt=true;trustServerCertificate=true
@@ -41,13 +41,13 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
-  data:
-    redis:
-      host: localhost
-      port: 6379
+#  data:
+#    redis:
+#      host: localhost
+#      port: 6379
 
 server:
-  port: 1112
+  port: 8888
 
 logging:
   level:
@@ -75,4 +75,12 @@ management:
       export:
         enabled: true
 
+  health:
+    redis:
+      enabled: false
 
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html

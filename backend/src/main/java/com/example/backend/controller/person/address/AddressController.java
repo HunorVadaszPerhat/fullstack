@@ -62,14 +62,24 @@ public class AddressController {
         return ResponseEntity.ok(addressService.update(id, dto));
     }
 
-    @GetMapping
+    @GetMapping("/paginated")
+    @Operation(summary = "Get paginated addresses", description = "Returns a page of addresses with sorting options.")
+    @ApiResponse(responseCode = "200", description = "Page retrieved successfully")
     public PagedResponse<AddressDto> getAllAddresses(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id,asc") String[] sort
+            @RequestParam(defaultValue = "addressId,asc") String[] sort
     ) {
-        Sort.Direction direction = sort[1].equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
-        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sort[0]));
+        String sortBy = (sort.length > 0 && sort[0] != null && !sort[0].isBlank())
+                ? sort[0]
+                : "addressId";
+
+        Sort.Direction direction = (sort.length > 1 && "desc".equalsIgnoreCase(sort[1]))
+                ? Sort.Direction.DESC
+                : Sort.Direction.ASC;
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
         return addressService.getAllAddresses(pageable);
     }
 }
