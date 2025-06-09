@@ -1,32 +1,53 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { AddressService } from '../services/address.service';
 import { Address } from '../models/address.model';
-import { CommonModule } from '@angular/common';
-import { MatListModule } from '@angular/material/list';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-address-list',
-  imports: [CommonModule, MatListModule],
-  template: `
-    <mat-list *ngIf="addresses?.length; else noData">
-      <mat-list-item *ngFor="let address of addresses">
-        {{ address.addressLine1 }}, {{ address.city }}
-      </mat-list-item>
-    </mat-list>
-    <ng-template #noData>
-      <p>No addresses found.</p>
-    </ng-template>
-  `
+  standalone: true,
+  templateUrl: './address-list.component.html',
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ]
 })
-export class AddressListComponent implements OnInit {
-  addresses: Address[] = [];
+export class AddressListComponent implements OnInit, AfterViewInit {
+  displayedColumns: string[] = ['addressId', 'addressLine1', 'city', 'postalCode', 'stateProvinceId'];
+  dataSource = new MatTableDataSource<Address>();
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private addressService: AddressService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.addressService.getAll().subscribe({
-      next: (data) => this.addresses = data,
+      next: (data) => {
+        this.dataSource.data = data;
+      },
       error: (err) => console.error('Failed to load addresses', err)
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.dataSource.filter = filterValue;
   }
 }
