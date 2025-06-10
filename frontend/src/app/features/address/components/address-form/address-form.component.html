@@ -1,0 +1,57 @@
+<h2>{{ isEditMode ? 'Edit Address' : 'Create Address' }}</h2>
+
+<form [formGroup]="addressForm" (ngSubmit)="onSubmit()">
+
+  <label>
+    Address Line 1:
+    <input formControlName="addressLine1" />
+    <span *ngIf="addressForm.get('addressLine1')?.invalid && addressForm.get('addressLine1')?.touched">
+      Required (max 100 characters)
+    </span>
+  </label>
+
+  <label>
+    Address Line 2:
+    <input formControlName="addressLine2" />
+    <span *ngIf="addressForm.get('addressLine2')?.invalid && addressForm.get('addressLine2')?.touched">
+      Max 100 characters
+    </span>
+  </label>
+
+  <label>
+    City:
+    <input formControlName="city" />
+    <span *ngIf="addressForm.get('city')?.invalid && addressForm.get('city')?.touched">
+      Required (max 50 characters)
+    </span>
+  </label>
+
+  <label>
+    State Province:
+    <select formControlName="stateProvinceId">
+      <option value="">-- Select --</option>
+      <option *ngFor="let state of stateProvinces" [value]="state.id">{{ state.name }}</option>
+    </select>
+    <span *ngIf="addressForm.get('stateProvinceId')?.invalid && addressForm.get('stateProvinceId')?.touched">
+      Required
+    </span>
+  </label>
+
+  <label>
+    Postal Code:
+    <input formControlName="postalCode" />
+    <span *ngIf="addressForm.get('postalCode')?.invalid && addressForm.get('postalCode')?.touched">
+      Required (5-digit numeric)
+    </span>
+  </label>
+
+  <label>
+    Spatial Location:
+    <input formControlName="spatialLocation" />
+  </label>
+
+  <button type="submit" [disabled]="addressForm.invalid">
+    {{ isEditMode ? 'Update' : 'Create' }}
+  </button>
+
+</form>

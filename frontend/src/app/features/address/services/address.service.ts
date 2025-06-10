@@ -66,4 +66,14 @@ export class AddressService {
       })
     );
   }
+
+    delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.api}/${id}`).pipe(
+      tap(() => console.log(`Deleted address id=${id}`)),
+      catchError(err => {
+        console.error(`Error deleting address id=${id}`, err);
+        return throwError(() => err);
+      })
+    );
+  }
 }

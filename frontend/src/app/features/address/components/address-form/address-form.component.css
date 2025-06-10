@@ -1,0 +1,16 @@
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+}
+
+label {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+span {
+  color: red;
+  font-size: 0.8rem;
+}

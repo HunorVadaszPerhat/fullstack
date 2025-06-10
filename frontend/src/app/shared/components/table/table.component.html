@@ -1,0 +1,25 @@
+<table>
+    <thead>
+        <tr>
+            <th>Sr no.</th>
+            @for (object of columnHeadNameArray; track $index) {
+                <th>{{object}}</th>
+            }
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (object of gridData; track $index) {
+            <tr>
+                <td>{{$index +1}}</td>
+                @for (objectField of objectFieldNameArray; track $index) {
+                    <td>{{object[objectField]}}</td>
+                }
+                <td>
+                    <button (click)="onEditBtnClicked(object)">Edit</button>
+                    <button (click)="onDeleteBtnClicked(object)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
