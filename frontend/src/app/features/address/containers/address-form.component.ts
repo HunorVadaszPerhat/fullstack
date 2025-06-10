@@ -43,7 +43,7 @@ export class AddressFormComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private addressService: AddressService
+    private addressService: AddressService,
   ) {
     this.addressForm = this.fb.group({
       addressLine1: ['', Validators.required],

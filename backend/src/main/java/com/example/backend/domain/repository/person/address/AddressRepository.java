@@ -9,12 +9,4 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 public interface AddressRepository extends JpaRepository<Address, Integer>, JpaSpecificationExecutor<Address> {
     Page<Address> findAll(Pageable pageable);
 
-    // This method will generate a SQL query like:
-    // SELECT * FROM addresses WHERE LOWER(city) LIKE LOWER('%city%')
-    Page<Address> findByCityContainingIgnoreCase(String city, Pageable pageable);
-
-
-
-
-
 }

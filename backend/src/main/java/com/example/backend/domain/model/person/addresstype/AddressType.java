@@ -1,17 +1,10 @@
 package com.example.backend.domain.model.person.addresstype;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
-
-import java.util.Date;
-import java.util.UUID;
-
-import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.generator.EventType;
 
 import java.util.Date;
 import java.util.UUID;
@@ -56,7 +49,8 @@ public class AddressType {
      * Used to support a merge replication sample.
      */
     @Column(name = "rowguid", nullable = false, columnDefinition = "uniqueidentifier default newid()")
-    private UUID rowguid = UUID.randomUUID();
+    @Generated(event = EventType.INSERT)
+    private UUID rowguid;
 
     /**
      * Date and time the record was last updated.
