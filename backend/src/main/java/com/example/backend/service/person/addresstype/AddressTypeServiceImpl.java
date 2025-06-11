@@ -29,7 +29,7 @@ public class AddressTypeServiceImpl implements AddressTypeService {
     }
 
     @Override
-    public PagedResponse<AddressTypeDto> getAllAddresses(Pageable pageable) {
+    public PagedResponse<AddressTypeDto> getAllAddressTypes(Pageable pageable) {
         return null;
     }
 

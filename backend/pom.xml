@@ -64,6 +64,20 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-test</artifactId>
+			<version>3.4.0</version> <!-- or newer -->
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.mysql</groupId> <!-- ✅ NOT "mysql" -->
+			<artifactId>mysql-connector-j</artifactId>
+			<version>8.3.0</version>     <!-- ✅ or latest from Maven Central -->
+			<scope>runtime</scope>
+		</dependency>
+
 		<!-- MapStruct core -->
 		<dependency>
 			<groupId>org.mapstruct</groupId>
