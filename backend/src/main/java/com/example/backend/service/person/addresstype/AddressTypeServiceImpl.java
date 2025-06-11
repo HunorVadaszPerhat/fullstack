@@ -1,7 +1,6 @@
 package com.example.backend.service.person.addresstype;
 
 import com.example.backend.dto.person.addresstype.AddressTypeDto;
-import com.example.backend.service.person.address.AddressService;
 import com.example.backend.util.response.PagedResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

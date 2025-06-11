@@ -1,6 +1,5 @@
 package com.example.backend.controller.person.addresstype;
 
-import com.example.backend.dto.person.address.AddressDto;
 import com.example.backend.dto.person.addresstype.AddressTypeDto;
 import com.example.backend.service.person.addresstype.AddressTypeService;
 import com.example.backend.util.response.PagedResponse;
@@ -61,7 +60,7 @@ public class AddressTypeController {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
 
-        return addressTypeService.getAllAddresses(pageable);
+        return addressTypeService.getAllAddressTypes(pageable);
     }
 
     @Operation(summary = "Create a new address type", description = "Adds a new address type.")

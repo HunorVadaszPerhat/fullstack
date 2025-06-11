@@ -10,7 +10,7 @@ public interface AddressTypeService {
     AddressTypeDto create(AddressTypeDto dto);
     AddressTypeDto getById(Integer id);
     List<AddressTypeDto> getAll();
-    PagedResponse<AddressTypeDto> getAllAddresses(Pageable pageable);
+    PagedResponse<AddressTypeDto> getAllAddressTypes(Pageable pageable);
     AddressTypeDto update(Integer id, AddressTypeDto dto);
     void delete(Integer id);
 }

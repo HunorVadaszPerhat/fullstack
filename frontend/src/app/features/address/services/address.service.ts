@@ -10,7 +10,7 @@ import { environment } from '../../../../environment/environment';
 export class AddressService {
   private readonly api = `${environment.apiBaseUrl}/address`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getAll(): Observable<Address[]> {
     return this.http.get<Address[]>(this.api).pipe(
@@ -27,6 +27,21 @@ export class AddressService {
       tap(data => console.log(`Received address id=${id}:`, data)),
       catchError(err => {
         console.error(`Error loading address id=${id}`, err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  getPaginated(page = 0, size = 10, sort: string[] = ['addressId', 'asc']): Observable<{ content: Address[], totalPages: number }> {
+    let params = new HttpParams()
+      .set('page', page)
+      .set('size', size)
+      .set('sort', sort.join(','));
+
+    return this.http.get<{ content: Address[], totalPages: number }>(`${this.api}/paginated`, { params }).pipe(
+      tap(data => console.log(`Received paginated addresses: page=${page}, size=${size}`, data)),
+      catchError(err => {
+        console.error('Error loading paginated addresses', err);
         return throwError(() => err);
       })
     );
@@ -52,22 +67,7 @@ export class AddressService {
     );
   }
 
-  getPaginated(page = 0, size = 10, sort: string[] = ['addressId', 'asc']): Observable<{ content: Address[], totalPages: number }> {
-    let params = new HttpParams()
-      .set('page', page)
-      .set('size', size)
-      .set('sort', sort.join(','));
-
-    return this.http.get<{ content: Address[], totalPages: number }>(`${this.api}/paginated`, { params }).pipe(
-      tap(data => console.log(`Received paginated addresses: page=${page}, size=${size}`, data)),
-      catchError(err => {
-        console.error('Error loading paginated addresses', err);
-        return throwError(() => err);
-      })
-    );
-  }
-
-    delete(id: number): Observable<void> {
+  delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.api}/${id}`).pipe(
       tap(() => console.log(`Deleted address id=${id}`)),
       catchError(err => {
