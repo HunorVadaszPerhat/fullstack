@@ -6,91 +6,124 @@ import com.example.backend.domain.repository.person.businessentity.BusinessEntit
 import com.example.backend.domain.repository.person.person.PersonRepository;
 import com.example.backend.dto.person.person.PersonDto;
 import com.example.backend.mapper.person.person.PersonMapper;
+import com.example.backend.util.response.PagedResponse;
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.example.backend.constants.CacheNames.*;
+
 @Service
 @RequiredArgsConstructor
-@Transactional // @Transactional ensures data consistency
+@Transactional
 public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository;
     private final BusinessEntityRepository businessEntityRepository;
     private final PersonMapper personMapper;
+    private final MeterRegistry meterRegistry;
 
-    /*
-    * A Person must be associated with an existing BusinessEntity
-    * - you must find BusinessEntity first as the primary key of Person
-    * - businessEntityId is passed into DTO provided by client/request etc.
-    * - when BusinessEntity is set on Person, ID is automatically used for Person due to @MapsId
-    * */
     @Override
+    @Cacheable(value = PERSONS_GET_ALL, key = "'all'")
+    @Timed(value = "person.get-all", description = "Time taken to get all persons (non-paginated)")
+    public List<PersonDto> getAll() {
+        return personRepository.findAll()
+                .stream()
+                .map(personMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    @Cacheable(value = PERSONS_GET_BY_ID, key = "#id")
+    @Timed(value = "person.get-by-id", description = "Time taken to get person by ID")
+    public PersonDto getById(Integer id) {
+        Person person = personRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Person not found with ID: " + id));
+        return personMapper.toDto(person);
+    }
+
+    @Override
+    @Cacheable(value = SEARCH_PERSONS, key = "{#pageable.pageNumber, #pageable.pageSize, #pageable.sort}")
+    @Timed(value = "person.get-paginated", description = "Time taken to get paginated persons")
+    public PagedResponse<PersonDto> getPaginated(Pageable pageable) {
+        Page<Person> page = personRepository.findAll(pageable);
+        List<PersonDto> content = page.getContent()
+                .stream()
+                .map(personMapper::toDto)
+                .toList();
+        return new PagedResponse<>(
+                content,
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages(),
+                page.isLast()
+        );
+    }
+
+    @Override
+    @Caching(evict = {
+            @CacheEvict(value = PERSONS_GET_BY_ID, key = "#result.businessEntityId", condition = "#result != null"),
+            @CacheEvict(value = PERSONS_GET_ALL, allEntries = true),
+            @CacheEvict(value = SEARCH_PERSONS, allEntries = true)
+    })
+    @Timed(value = "person.create", description = "Time taken to create person")
     public PersonDto create(PersonDto dto) {
-        // Step 1: Find existing BusinessEntity
         BusinessEntity businessEntity = businessEntityRepository.findById(dto.getBusinessEntityId())
-                .orElseThrow(() -> new EntityNotFoundException("BusinessEntity not found"));
-        // Step 2: Map DTO to Person entity
+                .orElseThrow(() -> new EntityNotFoundException("BusinessEntity not found with ID: " + dto.getBusinessEntityId()));
+
         Person person = personMapper.toEntity(dto);
-        // Step 3: Link Person to BusinessEntity
         person.setBusinessEntity(businessEntity);
-        // Step 4: Save and return
+
         Person saved = personRepository.save(person);
         return personMapper.toDto(saved);
     }
 
     @Override
-    public PersonDto getById(Integer id) {
-        // Step 1: Look up the Person by ID; throw an exception if not found
-        Person person = personRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Person not found"));
-
-        // Step 2: Convert the found Person entity to a DTO and return it
-        return personMapper.toDto(person);
-    }
-
-    @Override
-    public List<PersonDto> getAll() {
-        // Step 1: Retrieve all Person entities from the database
-        return personRepository.findAll()
-                .stream()
-                // Step 2: Convert each Person entity to a PersonDto using the mapper
-                .map(personMapper::toDto)
-                // Step 3: Collect the result into a List and return
-                .toList();
-    }
-
-    @Override
+    @Caching(evict = {
+            @CacheEvict(value = PERSONS_GET_BY_ID, key = "#id"),
+            @CacheEvict(value = PERSONS_GET_ALL, allEntries = true),
+            @CacheEvict(value = SEARCH_PERSONS, allEntries = true)
+    })
+    @Timed(value = "person.update", description = "Time taken to update person")
     public PersonDto update(Integer id, PersonDto dto) {
-        // Step 1: Find the existing Person by ID (or throw if not found)
         Person person = personRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Person not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Person not found with ID: " + id));
 
-        // Step 2: Map updated values from the DTO into the existing Person entity
         personMapper.updateFromDto(dto, person);
 
-        // Step 3: If DTO includes a new BusinessEntity ID, fetch and update the reference
         if (dto.getBusinessEntityId() != null) {
             BusinessEntity be = businessEntityRepository.findById(dto.getBusinessEntityId())
-                    .orElseThrow(() -> new EntityNotFoundException("BusinessEntity not found"));
+                    .orElseThrow(() -> new EntityNotFoundException("BusinessEntity not found with ID: " + dto.getBusinessEntityId()));
             person.setBusinessEntity(be);
         }
 
-        // Step 4: Save the updated Person and return the mapped DTO
-        return personMapper.toDto(personRepository.save(person));
+        Person saved = personRepository.save(person);
+        return personMapper.toDto(saved);
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = PERSONS_GET_BY_ID, key = "#id"),
+            @CacheEvict(value = PERSONS_GET_ALL, allEntries = true),
+            @CacheEvict(value = SEARCH_PERSONS, allEntries = true)
+    })
+    @Timed(value = "person.delete", description = "Time taken to delete person")
     public void delete(Integer id) {
-        // Step 1: Check if a Person with the given ID exists; if not, throw an exception
         if (!personRepository.existsById(id)) {
-            throw new EntityNotFoundException("Person not found");
+            throw new EntityNotFoundException("Person not found with ID: " + id);
         }
-
-        // Step 2: Delete the Person entity by ID
         personRepository.deleteById(id);
     }
 }
+

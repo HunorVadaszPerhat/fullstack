@@ -2,41 +2,32 @@ package com.example.backend.domain.model.person.businessentity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Source of the ID that connects vendors, customers, and employees with address and contact information.
+ */
 @Entity
-@Table(name = "BusinessEntity",
-        uniqueConstraints = @UniqueConstraint(name = "AK_BusinessEntity_rowguid", columnNames = "rowguid"),
-        schema = "Person"
-)
+@Table(name = "BusinessEntity", schema = "Person")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class BusinessEntity {
-    /**
-     * Primary key for all customers, vendors, and employees.
-     * Clustered index created by a primary key constraint.
-     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "BusinessEntityID")
+    @Column(name = "BusinessEntityID", nullable = false)
     private Integer businessEntityId;
 
-    /**
-     * ROWGUIDCOL number uniquely identifying the record.
-     * Used to support a merge replication sample.
-     */
-    @Column(name = "rowguid", nullable = false, columnDefinition = "uniqueidentifier default newid()")
-    private UUID rowguid = UUID.randomUUID();
+    @Column(name = "rowguid", nullable = false)
+    private UUID rowguid;
 
-    /**
-     * Date and time the record was last updated.
-     */
+    @UpdateTimestamp
     @Column(name = "ModifiedDate", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date modifiedDate;
+    private LocalDateTime modifiedDate;
 }

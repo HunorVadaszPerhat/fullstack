@@ -41,7 +41,6 @@ class AddressIntegrationTest {
                 .stateProvinceId(1)
                 .postalCode("12345")
                 .rowguid(UUID.randomUUID())
-                .modifiedDate(new Date())
                 .build();
 
         String createResponse = mockMvc.perform(post("/api/address")

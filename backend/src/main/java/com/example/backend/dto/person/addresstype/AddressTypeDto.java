@@ -2,7 +2,7 @@ package com.example.backend.dto.person.addresstype;
 
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -14,5 +14,5 @@ public class AddressTypeDto {
     private Integer addressTypeId;
     private String name;
     private UUID rowguid;
-    private Date modifiedDate;
+    private LocalDateTime modifiedDate;
 }

@@ -11,10 +11,17 @@ import com.example.backend.mapper.person.address.AddressMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
-import org.springframework.data.domain.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -54,7 +61,6 @@ class AddressServiceImplTest {
                 .addressLine1("123 Main St")
                 .city("Springfield")
                 .postalCode("12345")
-                .modifiedDate(new Date())
                 .stateProvince(province)
                 .build();
 
@@ -65,7 +71,6 @@ class AddressServiceImplTest {
                 .stateProvinceId(1)
                 .postalCode("12345")
                 .rowguid(UUID.randomUUID())
-                .modifiedDate(new Date())
                 .build();
     }
 
@@ -154,7 +159,7 @@ class AddressServiceImplTest {
         when(addressRepository.findAll(pageable)).thenReturn(page);
         when(addressMapper.toDto(entity)).thenReturn(dto);
 
-        var result = addressService.getAllAddresses(pageable);
+        var result = addressService.getPaginated(pageable);
 
         assertEquals(1, result.getContent().size());
         assertEquals(0, result.getPage());

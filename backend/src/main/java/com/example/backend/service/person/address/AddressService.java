@@ -10,7 +10,7 @@ public interface AddressService {
     AddressDto create(AddressDto dto);
     AddressDto getById(Integer id);
     List<AddressDto> getAll();
-    PagedResponse<AddressDto> getAllAddresses(Pageable pageable);
+    PagedResponse<AddressDto> getPaginated(Pageable pageable);
     AddressDto update(Integer id, AddressDto dto);
     void delete(Integer id);
 }

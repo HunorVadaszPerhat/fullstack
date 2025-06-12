@@ -8,14 +8,12 @@ import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
-
 /**
  * Cross-reference table mapping customers, vendors, and employees to their addresses.
  */
 @Entity
-@Table(name = "BusinessEntityAddress")
+@Table(name = "BusinessEntityAddress", schema = "Person")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,32 +26,24 @@ public class BusinessEntityAddress {
 
     @ManyToOne
     @MapsId("businessEntityId")
-    @JoinColumn(name = "BusinessEntityID")
+    @JoinColumn(name = "BusinessEntityID", nullable = false)
     private BusinessEntity businessEntity;
 
     @ManyToOne
     @MapsId("addressId")
-    @JoinColumn(name = "AddressID")
+    @JoinColumn(name = "AddressID", nullable = false)
     private Address address;
 
     @ManyToOne
     @MapsId("addressTypeId")
-    @JoinColumn(name = "AddressTypeID")
+    @JoinColumn(name = "AddressTypeID", nullable = false)
     private AddressType addressType;
 
-    /**
-     * ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
-     */
-    @Column(name = "rowguid", nullable = false, columnDefinition = "uniqueidentifier default newid()")
-    private UUID rowguid = UUID.randomUUID();
+    @Column(name = "rowguid", nullable = false)
+    private UUID rowguid;
 
-    /**
-     * Date and time the record was last updated.
-     * Automatically set when the entity is first created.
-     */
     @UpdateTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "ModifiedDate", nullable = false, columnDefinition = "datetime default getdate()")
-    private Date modifiedDate;
+    @Column(name = "ModifiedDate", nullable = false)
+    private LocalDateTime modifiedDate;
 }
 

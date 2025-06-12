@@ -45,7 +45,6 @@ class AddressControllerTest {
                 .stateProvinceId(1)
                 .postalCode("12345")
                 .rowguid(UUID.randomUUID())
-                .modifiedDate(new Date())
                 .build();
     }
 
@@ -65,7 +64,7 @@ class AddressControllerTest {
                 List.of(sampleDto), 0, 10, 1, 1, true
         );
 
-        when(addressService.getAllAddresses(any())).thenReturn(paged);
+        when(addressService.getPaginated(any())).thenReturn(paged);
 
         mockMvc.perform(get("/api/address/paginated?page=0&size=10&sort=addressId,asc"))
                 .andExpect(status().isOk())

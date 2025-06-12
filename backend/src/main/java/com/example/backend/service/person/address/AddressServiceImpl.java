@@ -13,6 +13,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.example.backend.constants.CacheNames.*;
 
 @Service
 @RequiredArgsConstructor
@@ -32,29 +34,8 @@ public class AddressServiceImpl implements AddressService {
     private final MeterRegistry meterRegistry;
 
     @Override
-    @CacheEvict(value = {"addresses", "searchAddresses"}, allEntries = true)
-    @Timed(value = "address.create", description = "Time taken to create address")
-    public AddressDto create(AddressDto dto) {
-        StateProvince stateProvince = stateProvinceRepository.findById(dto.getStateProvinceId())
-                .orElseThrow(() -> new EntityNotFoundException("StateProvince not found with ID: " + dto.getStateProvinceId()));
-        Address address = addressMapper.toEntity(dto);
-        address.setStateProvince(stateProvince);
-        Address saved = addressRepository.save(address);
-        return addressMapper.toDto(saved);
-    }
-
-    @Override
-    @Cacheable(value = "addresses", key = "#id")
-    @Timed(value = "address.get_by_id", description = "Time taken to get address by ID")
-    public AddressDto getById(Integer id) {
-        Address address = addressRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Address not found with ID: " + id));
-        return addressMapper.toDto(address);
-    }
-
-    @Override
-    @Cacheable(value = "addresses") // Useful only for small datasets or admin dashboards
-    @Timed(value = "address.get_all_raw", description = "Time taken to get all addresses (non-paginated)")
+    @Cacheable(value = ADDRESSES_GET_ALL, key = "'all'")
+    @Timed(value = "address.get-all", description = "Time taken to get all addresses (non-paginated)")
     public List<AddressDto> getAll() {
         return addressRepository.findAll()
                 .stream()
@@ -63,29 +44,18 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    @CacheEvict(value = {"addresses", "searchAddresses"}, allEntries = true)
-    @Timed(value = "address.update", description = "Time taken to update address")
-    public AddressDto update(Integer id, AddressDto dto) {
-        Address existingAddress = addressRepository.findById(id)
+    @Cacheable(value = ADDRESSES_GET_BY_ID, key = "#id")
+    @Timed(value = "address.get-by-id", description = "Time taken to get address by ID")
+    public AddressDto getById(Integer id) {
+        Address address = addressRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Address not found with ID: " + id));
-        addressMapper.updateEntityFromDto(dto, existingAddress);
-        Address saved = addressRepository.save(existingAddress);
-        return addressMapper.toDto(saved);
+        return addressMapper.toDto(address);
     }
 
     @Override
-    @CacheEvict(value = {"addresses", "searchAddresses"}, allEntries = true)
-    @Timed(value = "address.delete", description = "Time taken to delete address")
-    public void delete(Integer id) {
-        Address existingAddress = addressRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Address not found with ID: " + id));
-        addressRepository.delete(existingAddress);
-    }
-
-    @Override
-    @Cacheable(value = "searchAddresses", key = "{#pageable.pageNumber, #pageable.pageSize, #pageable.sort}")
-    @Timed(value = "address.get_paginated", description = "Time taken to get paginated addresses")
-    public PagedResponse<AddressDto> getAllAddresses(Pageable pageable) {
+    @Cacheable(value = SEARCH_ADDRESSES, key = "{#pageable.pageNumber, #pageable.pageSize, #pageable.sort}")
+    @Timed(value = "address.get-paginated", description = "Time taken to get paginated addresses")
+    public PagedResponse<AddressDto> getPaginated(Pageable pageable) {
         Page<Address> addressPage = addressRepository.findAll(pageable);
         List<AddressDto> content = addressPage.getContent()
                 .stream()
@@ -99,5 +69,49 @@ public class AddressServiceImpl implements AddressService {
                 addressPage.getTotalPages(),
                 addressPage.isLast()
         );
+    }
+
+    @Override
+    @Caching(evict = {
+            @CacheEvict(value = ADDRESSES_GET_BY_ID, key = "#result.addressId", condition = "#result != null"),
+            @CacheEvict(value = ADDRESSES_GET_ALL, allEntries = true),
+            @CacheEvict(value = SEARCH_ADDRESSES, allEntries = true)
+    })
+    @Timed(value = "address.create", description = "Time taken to create address")
+    public AddressDto create(AddressDto dto) {
+        StateProvince stateProvince = stateProvinceRepository.findById(dto.getStateProvinceId())
+                .orElseThrow(() -> new EntityNotFoundException("StateProvince not found with ID: " + dto.getStateProvinceId()));
+        Address address = addressMapper.toEntity(dto);
+        address.setStateProvince(stateProvince);
+        Address saved = addressRepository.save(address);
+        return addressMapper.toDto(saved);
+    }
+
+    @Override
+    @Caching(evict = {
+            @CacheEvict(value = ADDRESSES_GET_BY_ID, key = "#id"),
+            @CacheEvict(value = ADDRESSES_GET_ALL, allEntries = true),
+            @CacheEvict(value = SEARCH_ADDRESSES, allEntries = true)
+    })
+    @Timed(value = "address.update", description = "Time taken to update address")
+    public AddressDto update(Integer id, AddressDto dto) {
+        Address existingAddress = addressRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Address not found with ID: " + id));
+        addressMapper.updateEntityFromDto(dto, existingAddress);
+        Address saved = addressRepository.save(existingAddress);
+        return addressMapper.toDto(saved);
+    }
+
+    @Override
+    @Caching(evict = {
+            @CacheEvict(value = ADDRESSES_GET_BY_ID, key = "#id"),
+            @CacheEvict(value = ADDRESSES_GET_ALL, allEntries = true),
+            @CacheEvict(value = SEARCH_ADDRESSES, allEntries = true)
+    })
+    @Timed(value = "address.delete", description = "Time taken to delete address")
+    public void delete(Integer id) {
+        Address existingAddress = addressRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Address not found with ID: " + id));
+        addressRepository.delete(existingAddress);
     }
 }

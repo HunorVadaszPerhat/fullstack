@@ -49,7 +49,7 @@ public class AddressController {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
 
-        return addressService.getAllAddresses(pageable);
+        return addressService.getPaginated(pageable);
     }
 
     @Operation(summary = "Get address by ID", description = "Returns an address for the given ID.")

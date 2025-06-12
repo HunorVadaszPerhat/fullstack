@@ -8,5 +8,4 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface AddressRepository extends JpaRepository<Address, Integer>, JpaSpecificationExecutor<Address> {
     Page<Address> findAll(Pageable pageable);
-
 }

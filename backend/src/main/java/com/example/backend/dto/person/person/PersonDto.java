@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -28,5 +28,5 @@ public class PersonDto {
     private String additionalContactInfo;
     private String demographics;
     private UUID rowguid;
-    private Date modifiedDate;
+    private LocalDateTime modifiedDate;
 }

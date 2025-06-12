@@ -2,17 +2,20 @@ package com.example.backend.controller.person.businessentity;
 
 import com.example.backend.dto.person.businessentity.BusinessEntityDto;
 import com.example.backend.service.person.businessentity.BusinessEntityService;
+import com.example.backend.util.response.PagedResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @RestController
 @RequestMapping("/api/business-entities")
 @RequiredArgsConstructor
@@ -20,12 +23,32 @@ public class BusinessEntityController {
 
     private final BusinessEntityService businessEntityService;
 
-    @Operation(summary = "Create a new business entity", description = "Adds a new business entity record.")
-    @ApiResponse(responseCode = "200", description = "Business entity successfully created")
-    @PostMapping
-    public ResponseEntity<BusinessEntityDto> create(
-            @RequestBody @Valid BusinessEntityDto dto) {
-        return ResponseEntity.ok(businessEntityService.create(dto));
+    @Operation(summary = "Get all business entities", description = "Returns a list of all business entities.")
+    @ApiResponse(responseCode = "200", description = "List retrieved successfully")
+    @GetMapping
+    public ResponseEntity<List<BusinessEntityDto>> getAll() {
+        return ResponseEntity.ok(businessEntityService.getAll());
+    }
+
+    @GetMapping("/paginated")
+    @Operation(summary = "Get paginated business entities", description = "Returns a page of business entities with sorting options.")
+    @ApiResponse(responseCode = "200", description = "Page retrieved successfully")
+    public PagedResponse<BusinessEntityDto> getAllPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "businessEntityId,asc") String[] sort
+    ) {
+        String sortBy = (sort.length > 0 && sort[0] != null && !sort[0].isBlank())
+                ? sort[0]
+                : "businessEntityId";
+
+        Sort.Direction direction = (sort.length > 1 && "desc".equalsIgnoreCase(sort[1]))
+                ? Sort.Direction.DESC
+                : Sort.Direction.ASC;
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        return businessEntityService.getPaginated(pageable);
     }
 
     @Operation(summary = "Get business entity by ID", description = "Returns a business entity for the given ID.")
@@ -39,11 +62,12 @@ public class BusinessEntityController {
         return ResponseEntity.ok(businessEntityService.getById(id));
     }
 
-    @Operation(summary = "Get all business entities", description = "Returns a list of all business entities.")
-    @ApiResponse(responseCode = "200", description = "List retrieved successfully")
-    @GetMapping
-    public ResponseEntity<List<BusinessEntityDto>> getAll() {
-        return ResponseEntity.ok(businessEntityService.getAll());
+    @Operation(summary = "Create a new business entity", description = "Adds a new business entity record.")
+    @ApiResponse(responseCode = "200", description = "Business entity successfully created")
+    @PostMapping
+    public ResponseEntity<BusinessEntityDto> create(
+            @RequestBody @Valid BusinessEntityDto dto) {
+        return ResponseEntity.ok(businessEntityService.create(dto));
     }
 
     @Operation(summary = "Update business entity", description = "Updates an existing business entity by ID.")

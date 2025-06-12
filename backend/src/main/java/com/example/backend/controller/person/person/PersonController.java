@@ -2,17 +2,20 @@ package com.example.backend.controller.person.person;
 
 import com.example.backend.dto.person.person.PersonDto;
 import com.example.backend.service.person.person.PersonService;
+import com.example.backend.util.response.PagedResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @RestController
 @RequestMapping("/api/persons")
 @RequiredArgsConstructor
@@ -46,6 +49,27 @@ public class PersonController {
         return ResponseEntity.ok(personService.getAll());
     }
 
+    @Operation(summary = "Get paginated persons", description = "Returns a page of persons with sorting options.")
+    @ApiResponse(responseCode = "200", description = "Page retrieved successfully")
+    @GetMapping("/paginated")
+    public PagedResponse<PersonDto> getPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "businessEntityId,asc") String[] sort
+    ) {
+        String sortBy = (sort.length > 0 && sort[0] != null && !sort[0].isBlank())
+                ? sort[0]
+                : "businessEntityId";
+
+        Sort.Direction direction = (sort.length > 1 && "desc".equalsIgnoreCase(sort[1]))
+                ? Sort.Direction.DESC
+                : Sort.Direction.ASC;
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        return personService.getPaginated(pageable);
+    }
+
     @Operation(summary = "Update person", description = "Updates a person by ID.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Person successfully updated"),
@@ -70,3 +94,4 @@ public class PersonController {
         return ResponseEntity.noContent().build();
     }
 }
+

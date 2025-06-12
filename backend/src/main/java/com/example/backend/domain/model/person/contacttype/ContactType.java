@@ -5,44 +5,26 @@ import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-
 /**
  * Lookup table containing the types of business entity contacts.
  */
 @Entity
-@Table(name = "ContactType",
-        uniqueConstraints = @UniqueConstraint(name = "AK_ContactType_Name", columnNames = "Name"),
-        schema = "Person"
-)
+@Table(name = "ContactType", schema = "Person")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class ContactType {
-
-    /**
-     * Primary key for ContactType records.
-     * Clustered index created by a primary key constraint.
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ContactTypeID")
+    @Column(name = "ContactTypeID", nullable = false)
     private Integer contactTypeId;
 
-    /**
-     * Contact type description.
-     */
-    @Column(name = "Name", nullable = false, unique = true, length = 50)
+    @Column(name = "Name", nullable = false, length = 50)
     private String name;
 
-    /**
-     * Date and time the record was last updated.
-     * Automatically set when the entity is first created.
-     */
     @UpdateTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "ModifiedDate", nullable = false, columnDefinition = "datetime default getdate()")
-    private Date modifiedDate;
+    @Column(name = "ModifiedDate", nullable = false)
+    private LocalDateTime modifiedDate;
 }

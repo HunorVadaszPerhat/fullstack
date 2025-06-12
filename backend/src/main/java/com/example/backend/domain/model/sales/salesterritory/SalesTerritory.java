@@ -6,21 +6,14 @@ import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
  * Sales territory lookup table.
  */
 @Entity
-@Table(
-        name = "SalesTerritory",
-        schema = "Sales",
-        uniqueConstraints = {
-                @UniqueConstraint(name = "AK_SalesTerritory_Name", columnNames = "Name"),
-                @UniqueConstraint(name = "AK_SalesTerritory_rowguid", columnNames = "rowguid")
-        }
-)
+@Table(name = "SalesTerritory", schema = "Sales")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,71 +21,37 @@ import java.util.UUID;
 @Builder
 public class SalesTerritory {
 
-    /**
-     * Primary key for SalesTerritory records.
-     * Clustered index created by a primary key constraint.
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TerritoryID")
+    @Column(name = "TerritoryID", nullable = false)
     private Integer territoryId;
 
-    /**
-     * Sales territory description.
-     */
     @Column(name = "Name", nullable = false, length = 50)
     private String name;
 
-    /**
-     * ISO standard country or region code. Foreign key to CountryRegion.CountryRegionCode.
-     */
     @ManyToOne
     @JoinColumn(name = "CountryRegionCode", nullable = false)
     private CountryRegion countryRegion;
 
-    /**
-     * Geographic area to which the sales territory belongs.
-     */
     @Column(name = "[Group]", nullable = false, length = 50)
     private String group;
 
-    /**
-     * Sales in the territory year to date.
-     */
-    @Column(name = "SalesYTD", nullable = false, columnDefinition = "money default 0.00")
+    @Column(name = "SalesYTD", nullable = false)
     private BigDecimal salesYTD = BigDecimal.ZERO;
 
-    /**
-     * Sales in the territory the previous year.
-     */
-    @Column(name = "SalesLastYear", nullable = false, columnDefinition = "money default 0.00")
+    @Column(name = "SalesLastYear", nullable = false)
     private BigDecimal salesLastYear = BigDecimal.ZERO;
 
-    /**
-     * Business costs in the territory year to date.
-     */
-    @Column(name = "CostYTD", nullable = false, columnDefinition = "money default 0.00")
+    @Column(name = "CostYTD", nullable = false)
     private BigDecimal costYTD = BigDecimal.ZERO;
 
-    /**
-     * Business costs in the territory the previous year.
-     */
-    @Column(name = "CostLastYear", nullable = false, columnDefinition = "money default 0.00")
+    @Column(name = "CostLastYear", nullable = false)
     private BigDecimal costLastYear = BigDecimal.ZERO;
 
-    /**
-     * ROWGUIDCOL number uniquely identifying the record.
-     * Used to support a merge replication sample.
-     */
-    @Column(name = "rowguid", nullable = false, columnDefinition = "uniqueidentifier default newid()", unique = true)
-    private UUID rowguid = UUID.randomUUID();
+    @Column(name = "rowguid", nullable = false)
+    private UUID rowguid;
 
-    /**
-     * Date and time the record was last updated.
-     * Automatically set when the entity is first created.
-     */
     @UpdateTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "ModifiedDate", nullable = false, columnDefinition = "datetime default getdate()")
-    private Date modifiedDate;
+    @Column(name = "ModifiedDate", nullable = false)
+    private LocalDateTime modifiedDate;
 }
