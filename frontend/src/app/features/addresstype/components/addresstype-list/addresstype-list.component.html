@@ -1,1 +1,10 @@
 <p>addresstype-list works!</p>
+<button (click)="onCreate()">+ New Address</button>
+<app-table 
+    [columnHeadNameArray]="columnHeadNameArray"
+    [objectFieldNameArray]="objectFieldNameArray"
+    [gridData]="dataSource"
+    (onEditClicked)="onEdit($event)" 
+    (onDeleteClicked)="onDelete($event)"   
+>
+</app-table>

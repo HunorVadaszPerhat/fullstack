@@ -15,7 +15,7 @@ export class AddressListComponent {
   objectFieldNameArray : string[] = ["addressLine1", "addressLine2", "city", "stateProvinceId", "postalCode", "spatialLocation", "modifiedDate"];
   dataSource: Address[] = [];
 
-constructor(private addressService: AddressService, private router: Router) {}
+  constructor(private readonly addressService: AddressService, private readonly router: Router) {}
 
   ngOnInit(): void {
     this.loadAddresses();

@@ -1,1 +1,22 @@
 <p>addresstype-form works!</p>
+
+<h2>{{ isEditMode ? 'Edit Address Type' : 'Create Address Type' }}</h2>
+
+<form [formGroup]="addressForm" (ngSubmit)="onSubmit()">
+
+  <label>
+    Name:
+    <select formControlName="name">
+      <option value="">-- Select --</option>
+      <option *ngFor="let state of addressTypes" [value]="state.id">{{ state.name }}</option>
+    </select>
+    <span *ngIf="addressForm.get('name')?.invalid && addressForm.get('name')?.touched">
+      Required
+    </span>
+  </label>
+
+  <button type="submit" [disabled]="addressForm.invalid">
+    {{ isEditMode ? 'Update' : 'Create' }}
+  </button>
+
+</form>
