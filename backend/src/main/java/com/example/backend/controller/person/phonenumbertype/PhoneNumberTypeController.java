@@ -1,6 +1,7 @@
 package com.example.backend.controller.person.phonenumbertype;
 
 import com.example.backend.dto.person.phonenumbertype.PhoneNumberTypeDto;
+import com.example.backend.service.person.phonenumbertype.PhoneNumberTypeService;
 import com.example.backend.util.response.PagedResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

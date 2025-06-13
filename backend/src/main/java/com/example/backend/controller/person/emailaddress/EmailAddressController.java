@@ -2,6 +2,7 @@ package com.example.backend.controller.person.emailaddress;
 
 import com.example.backend.dto.person.emailaddress.EmailAddressDto;
 import com.example.backend.dto.person.emailaddress.EmailAddressIdDto;
+import com.example.backend.service.person.emailaddress.EmailAddressService;
 import com.example.backend.util.response.PagedResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -30,25 +31,20 @@ public class EmailAddressController {
         return ResponseEntity.ok(emailAddressService.getAll());
     }
 
-    @GetMapping("/paginated")
     @Operation(summary = "Get paginated email addresses", description = "Returns a page of email addresses with sorting options.")
     @ApiResponse(responseCode = "200", description = "Page retrieved successfully")
-    public PagedResponse<EmailAddressDto> getPaginated(
+    @GetMapping("/paginated")
+    public ResponseEntity<PagedResponse<EmailAddressDto>> getPaginated(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id.businessEntityId,asc") String[] sort
     ) {
-        String sortBy = (sort.length > 0 && sort[0] != null && !sort[0].isBlank())
-                ? sort[0]
-                : "id.businessEntityId";
-
-        Sort.Direction direction = (sort.length > 1 && "desc".equalsIgnoreCase(sort[1]))
-                ? Sort.Direction.DESC
-                : Sort.Direction.ASC;
+        String sortBy = (sort.length > 0 && sort[0] != null && !sort[0].isBlank()) ? sort[0] : "id.businessEntityId";
+        Sort.Direction direction = (sort.length > 1 && "desc".equalsIgnoreCase(sort[1])) ? Sort.Direction.DESC : Sort.Direction.ASC;
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
-
-        return emailAddressService.getPaginated(pageable);
+        PagedResponse<EmailAddressDto> result = emailAddressService.getPaginated(pageable);
+        return ResponseEntity.ok(result);
     }
 
     @Operation(summary = "Get email address by composite ID", description = "Returns an email address by business entity ID and email address ID.")
@@ -103,4 +99,3 @@ public class EmailAddressController {
         return ResponseEntity.noContent().build();
     }
 }
-

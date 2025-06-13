@@ -41,4 +41,20 @@ public final class CacheNames {
     public static final String PHONE_NUMBER_TYPES_GET_ALL = "phone-number-types-get-all";
     public static final String PHONE_NUMBER_TYPES_GET_BY_ID = "phone-number-types-get-by-id";
     public static final String SEARCH_PHONE_NUMBER_TYPES = "search-phone-number-types";
+
+    public static final String BUSINESS_ENTITY_ADDRESSES_GET_ALL = "business-entity-addresses-get-all";
+    public static final String BUSINESS_ENTITY_ADDRESSES_GET_BY_ID = "business-entity-addresses-get-by-id";
+    public static final String SEARCH_BUSINESS_ENTITY_ADDRESSES = "search-business-entity-addresses";
+
+    public static final String BUSINESS_ENTITY_CONTACTS_GET_ALL = "business-entity-contacts-get-all";
+    public static final String BUSINESS_ENTITY_CONTACTS_GET_BY_ID = "business-entity-contacts-get-by-id";
+    public static final String SEARCH_BUSINESS_ENTITY_CONTACTS = "search-business-entity-contacts";
+
+    public static final String PERSON_PHONES_GET_ALL = "person-phones-get-all";
+    public static final String PERSON_PHONES_GET_BY_ID = "person-phones-get-by-id";
+    public static final String SEARCH_PERSON_PHONES = "search-person-phones";
+
+    public static final String STATE_PROVINCES_GET_ALL = "state-provinces-get-all";
+    public static final String STATE_PROVINCES_GET_BY_ID = "state-provinces-get-by-id";
+    public static final String SEARCH_STATE_PROVINCES = "search-state-provinces";
 }
