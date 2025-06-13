@@ -1,32 +1,37 @@
-package com.example.backend.mapper.person.personphone;
+package com.example.backend.mapper.person.businessentitycontact;
 
 import com.example.backend.domain.model.person.address.Address;
 import com.example.backend.domain.model.person.addresstype.AddressType;
 import com.example.backend.domain.model.person.businessentity.BusinessEntity;
 import com.example.backend.domain.model.person.contacttype.ContactType;
 import com.example.backend.domain.model.person.person.Person;
-import com.example.backend.domain.model.person.phonenumbertype.PhoneNumberType;
 import com.example.backend.domain.repository.person.address.AddressRepository;
 import com.example.backend.domain.repository.person.addresstype.AddressTypeRepository;
 import com.example.backend.domain.repository.person.businessentity.BusinessEntityRepository;
 import com.example.backend.domain.repository.person.contacttype.ContactTypeRepository;
 import com.example.backend.domain.repository.person.person.PersonRepository;
-import com.example.backend.domain.repository.person.phonenumbertype.PhoneNumberTypeRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
-@RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class EntityResolver {
+public class BusinessEntityContactResolver {
 
     private final BusinessEntityRepository businessEntityRepository;
     private final AddressRepository addressRepository;
     private final AddressTypeRepository addressTypeRepository;
     private final ContactTypeRepository contactTypeRepository;
     private final PersonRepository personRepository;
-    private final PhoneNumberTypeRepository phoneNumberTypeRepository;
+
+    public BusinessEntityContactResolver(BusinessEntityRepository businessEntityRepository,
+                                         AddressRepository addressRepository,
+                                         AddressTypeRepository addressTypeRepository,
+                                         ContactTypeRepository contactTypeRepository,
+                                         PersonRepository personRepository) {
+        this.businessEntityRepository = businessEntityRepository;
+        this.addressRepository = addressRepository;
+        this.addressTypeRepository = addressTypeRepository;
+        this.contactTypeRepository = contactTypeRepository;
+        this.personRepository = personRepository;
+    }
 
     public BusinessEntity resolveBusinessEntity(Integer id) {
         return businessEntityRepository.findById(id)
@@ -51,11 +56,6 @@ public class EntityResolver {
     public Person resolvePerson(Integer id) {
         return personRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Person not found: " + id));
-    }
-
-    public PhoneNumberType resolvePhoneNumberType(Integer id) {
-        return phoneNumberTypeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("PhoneNumberType not found: " + id));
     }
 }
 

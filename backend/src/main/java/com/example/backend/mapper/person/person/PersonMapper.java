@@ -8,16 +8,22 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface PersonMapper {
 
-    @Mapping(source = "businessEntity.businessEntityId", target = "businessEntityId")
+    @Mapping(source = "businessEntity", target = "businessEntityId", qualifiedByName = "extractBusinessEntityId")
     PersonDto toDto(Person person);
 
-    @Mapping(source = "businessEntityId", target = "businessEntity.businessEntityId")
+    @Mapping(target = "businessEntity", ignore = true)
     Person toEntity(PersonDto dto);
 
-    // Optional update method for PATCH/PUT
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "businessEntity", ignore = true)
     void updateFromDto(PersonDto dto, @MappingTarget Person entity);
+
+    @Named("extractBusinessEntityId")
+    static Integer extractBusinessEntityId(BusinessEntity entity) {
+        return entity != null ? entity.getBusinessEntityId() : null;
+    }
 }
+
 
 /* EXPLICIT MANUAL MAPPING:
 ------------------------------------------------------------------------------------------------------------------------

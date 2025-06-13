@@ -20,7 +20,7 @@ public interface BusinessEntityContactMapper {
     @Mapping(target = "businessEntity", expression = "java(resolver.resolveBusinessEntity(dto.getBusinessEntityId()))")
     @Mapping(target = "person", expression = "java(resolver.resolvePerson(dto.getPersonId()))")
     @Mapping(target = "contactType", expression = "java(resolver.resolveContactType(dto.getContactTypeId()))")
-    BusinessEntityContact toEntity(BusinessEntityContactDto dto, @Context EntityResolver resolver);
+    BusinessEntityContact toEntity(BusinessEntityContactDto dto, @Context BusinessEntityContactResolver resolver);
 
     // Update existing entity in-place
     @Mapping(target = "id.businessEntityId", source = "businessEntityId")
@@ -29,5 +29,5 @@ public interface BusinessEntityContactMapper {
     @Mapping(target = "businessEntity", expression = "java(resolver.resolveBusinessEntity(dto.getBusinessEntityId()))")
     @Mapping(target = "person", expression = "java(resolver.resolvePerson(dto.getPersonId()))")
     @Mapping(target = "contactType", expression = "java(resolver.resolveContactType(dto.getContactTypeId()))")
-    void updateEntityFromDto(BusinessEntityContactDto dto, @MappingTarget BusinessEntityContact entity, @Context EntityResolver resolver);
+    void updateEntityFromDto(BusinessEntityContactDto dto, @MappingTarget BusinessEntityContact entity, @Context BusinessEntityContactResolver resolver);
 }

@@ -5,7 +5,7 @@ import com.example.backend.domain.model.person.businessentitycontact.BusinessEnt
 import com.example.backend.domain.repository.person.businessentitycontact.BusinessEntityContactRepository;
 import com.example.backend.dto.person.businessentitycontact.BusinessEntityContactDto;
 import com.example.backend.mapper.person.businessentitycontact.BusinessEntityContactMapper;
-import com.example.backend.mapper.person.businessentitycontact.EntityResolver;
+import com.example.backend.mapper.person.businessentitycontact.BusinessEntityContactResolver;
 import com.example.backend.util.response.PagedResponse;
 import io.micrometer.core.annotation.Timed;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -31,7 +31,7 @@ public class BusinessEntityContactServiceImpl implements BusinessEntityContactSe
 
     private final BusinessEntityContactRepository repository;
     private final BusinessEntityContactMapper mapper;
-    private final EntityResolver entityResolver;
+    private final BusinessEntityContactResolver entityResolver;
     private final MeterRegistry meterRegistry;
 
     @Override

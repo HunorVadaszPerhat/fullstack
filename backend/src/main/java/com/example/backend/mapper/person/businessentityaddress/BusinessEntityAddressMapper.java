@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring", uses = { EntityResolver.class })
+@Mapper(componentModel = "spring", uses = { BusinessEntityAddressResolver.class })
 public interface BusinessEntityAddressMapper {
 
     @Mapping(source = "id.businessEntityId", target = "businessEntityID")
@@ -21,7 +21,7 @@ public interface BusinessEntityAddressMapper {
     @Mapping(target = "businessEntity", expression = "java(resolver.resolveBusinessEntity(dto.getBusinessEntityID()))")
     @Mapping(target = "address", expression = "java(resolver.resolveAddress(dto.getAddressID()))")
     @Mapping(target = "addressType", expression = "java(resolver.resolveAddressType(dto.getAddressTypeID()))")
-    BusinessEntityAddress toEntity(BusinessEntityAddressDto dto, @Context EntityResolver resolver);
+    BusinessEntityAddress toEntity(BusinessEntityAddressDto dto, @Context BusinessEntityAddressResolver resolver);
 
     @Mapping(target = "id.businessEntityId", source = "businessEntityID")
     @Mapping(target = "id.addressId", source = "addressID")
@@ -29,7 +29,7 @@ public interface BusinessEntityAddressMapper {
     @Mapping(target = "businessEntity", expression = "java(resolver.resolveBusinessEntity(dto.getBusinessEntityID()))")
     @Mapping(target = "address", expression = "java(resolver.resolveAddress(dto.getAddressID()))")
     @Mapping(target = "addressType", expression = "java(resolver.resolveAddressType(dto.getAddressTypeID()))")
-    void updateEntityFromDto(BusinessEntityAddressDto dto, @MappingTarget BusinessEntityAddress entity, @Context EntityResolver resolver);
+    void updateEntityFromDto(BusinessEntityAddressDto dto, @MappingTarget BusinessEntityAddress entity, @Context BusinessEntityAddressResolver resolver);
 }
 
 

@@ -17,13 +17,13 @@ public interface PersonPhoneMapper {
     @Mapping(target = "id.phoneNumberTypeId", source = "phoneNumberTypeId")
     @Mapping(target = "person", expression = "java(resolver.resolvePerson(dto.getBusinessEntityId()))")
     @Mapping(target = "phoneNumberType", expression = "java(resolver.resolvePhoneNumberType(dto.getPhoneNumberTypeId()))")
-    PersonPhone toEntity(PersonPhoneDto dto, @Context EntityResolver resolver);
+    PersonPhone toEntity(PersonPhoneDto dto, @Context PersonPhoneResolver resolver);
 
     @Mapping(target = "id.businessEntityId", source = "businessEntityId")
     @Mapping(target = "id.phoneNumber", source = "phoneNumber")
     @Mapping(target = "id.phoneNumberTypeId", source = "phoneNumberTypeId")
     @Mapping(target = "person", expression = "java(resolver.resolvePerson(dto.getBusinessEntityId()))")
     @Mapping(target = "phoneNumberType", expression = "java(resolver.resolvePhoneNumberType(dto.getPhoneNumberTypeId()))")
-    void updateEntityFromDto(PersonPhoneDto dto, @MappingTarget PersonPhone entity, @Context EntityResolver resolver);
+    void updateEntityFromDto(PersonPhoneDto dto, @MappingTarget PersonPhone entity, @Context PersonPhoneResolver resolver);
 }
 

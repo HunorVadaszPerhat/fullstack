@@ -4,7 +4,7 @@ import com.example.backend.domain.model.person.personphone.PersonPhone;
 import com.example.backend.domain.model.person.personphone.PersonPhoneId;
 import com.example.backend.domain.repository.person.personphone.PersonPhoneRepository;
 import com.example.backend.dto.person.personphone.PersonPhoneDto;
-import com.example.backend.mapper.person.personphone.EntityResolver;
+import com.example.backend.mapper.person.personphone.PersonPhoneResolver;
 import com.example.backend.mapper.person.personphone.PersonPhoneMapper;
 import com.example.backend.util.response.PagedResponse;
 import io.micrometer.core.annotation.Timed;
@@ -30,7 +30,7 @@ public class PersonPhoneServiceImpl implements PersonPhoneService {
 
     private final PersonPhoneRepository repository;
     private final PersonPhoneMapper mapper;
-    private final EntityResolver entityResolver;
+    private final PersonPhoneResolver personPhoneResolver;
     private final MeterRegistry meterRegistry;
 
     @Override
@@ -80,7 +80,7 @@ public class PersonPhoneServiceImpl implements PersonPhoneService {
     })
     @Timed(value = "personPhone.create", description = "Time taken to create person phone")
     public PersonPhoneDto create(PersonPhoneDto dto) {
-        PersonPhone entity = mapper.toEntity(dto, entityResolver);
+        PersonPhone entity = mapper.toEntity(dto, personPhoneResolver);
         entity.setId(new PersonPhoneId(dto.getBusinessEntityId(), dto.getPhoneNumber(), dto.getPhoneNumberTypeId()));
         PersonPhone saved = repository.save(entity);
         return mapper.toDto(saved);
@@ -98,7 +98,7 @@ public class PersonPhoneServiceImpl implements PersonPhoneService {
         PersonPhone existing = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("PersonPhone not found with ID: " + id));
 
-        mapper.updateEntityFromDto(dto, existing, entityResolver);
+        mapper.updateEntityFromDto(dto, existing, personPhoneResolver);
         PersonPhone updated = repository.save(existing);
         return mapper.toDto(updated);
     }
