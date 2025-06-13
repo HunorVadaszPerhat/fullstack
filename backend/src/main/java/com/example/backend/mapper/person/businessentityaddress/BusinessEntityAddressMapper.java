@@ -1,35 +1,61 @@
 package com.example.backend.mapper.person.businessentityaddress;
 
+import com.example.backend.domain.model.person.address.Address;
+import com.example.backend.domain.model.person.addresstype.AddressType;
+import com.example.backend.domain.model.person.businessentity.BusinessEntity;
 import com.example.backend.domain.model.person.businessentityaddress.BusinessEntityAddress;
+import com.example.backend.domain.model.person.businessentityaddress.BusinessEntityAddressId;
 import com.example.backend.dto.person.businessentityaddress.BusinessEntityAddressDto;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring", uses = { BusinessEntityAddressResolver.class })
-public interface BusinessEntityAddressMapper {
+@Component
+@RequiredArgsConstructor
+public class BusinessEntityAddressMapper {
 
-    @Mapping(source = "id.businessEntityId", target = "businessEntityID")
-    @Mapping(source = "id.addressId", target = "addressID")
-    @Mapping(source = "id.addressTypeId", target = "addressTypeID")
-    BusinessEntityAddressDto toDto(BusinessEntityAddress entity);
+    private final BusinessEntityAddressResolver resolver;
 
-    @Mapping(target = "id.businessEntityId", source = "businessEntityID")
-    @Mapping(target = "id.addressId", source = "addressID")
-    @Mapping(target = "id.addressTypeId", source = "addressTypeID")
-    @Mapping(target = "businessEntity", expression = "java(resolver.resolveBusinessEntity(dto.getBusinessEntityID()))")
-    @Mapping(target = "address", expression = "java(resolver.resolveAddress(dto.getAddressID()))")
-    @Mapping(target = "addressType", expression = "java(resolver.resolveAddressType(dto.getAddressTypeID()))")
-    BusinessEntityAddress toEntity(BusinessEntityAddressDto dto, @Context BusinessEntityAddressResolver resolver);
+    public BusinessEntityAddressDto toDto(BusinessEntityAddress entity) {
+        if (entity == null) return null;
 
-    @Mapping(target = "id.businessEntityId", source = "businessEntityID")
-    @Mapping(target = "id.addressId", source = "addressID")
-    @Mapping(target = "id.addressTypeId", source = "addressTypeID")
-    @Mapping(target = "businessEntity", expression = "java(resolver.resolveBusinessEntity(dto.getBusinessEntityID()))")
-    @Mapping(target = "address", expression = "java(resolver.resolveAddress(dto.getAddressID()))")
-    @Mapping(target = "addressType", expression = "java(resolver.resolveAddressType(dto.getAddressTypeID()))")
-    void updateEntityFromDto(BusinessEntityAddressDto dto, @MappingTarget BusinessEntityAddress entity, @Context BusinessEntityAddressResolver resolver);
+        return BusinessEntityAddressDto.builder()
+                .businessEntityID(entity.getId().getBusinessEntityId())
+                .addressID(entity.getId().getAddressId())
+                .addressTypeID(entity.getId().getAddressTypeId())
+                .rowguid(entity.getRowguid())
+                .modifiedDate(entity.getModifiedDate())
+                .build();
+    }
+
+    public BusinessEntityAddress toEntity(BusinessEntityAddressDto dto) {
+        if (dto == null) return null;
+
+        BusinessEntity businessEntity = resolver.resolveBusinessEntity(dto.getBusinessEntityID());
+        Address address = resolver.resolveAddress(dto.getAddressID());
+        AddressType addressType = resolver.resolveAddressType(dto.getAddressTypeID());
+
+        return BusinessEntityAddress.builder()
+                .id(new BusinessEntityAddressId(dto.getBusinessEntityID(), dto.getAddressID(), dto.getAddressTypeID()))
+                .businessEntity(businessEntity)
+                .address(address)
+                .addressType(addressType)
+                .rowguid(dto.getRowguid())
+                .modifiedDate(dto.getModifiedDate())
+                .build();
+    }
+
+    public void updateEntityFromDto(BusinessEntityAddressDto dto, BusinessEntityAddress entity) {
+        if (dto == null || entity == null) return;
+
+        if (dto.getRowguid() != null) {
+            entity.setRowguid(dto.getRowguid());
+        }
+
+        if (dto.getBusinessEntityID() != null && dto.getAddressID() != null && dto.getAddressTypeID() != null) {
+            entity.setId(new BusinessEntityAddressId(dto.getBusinessEntityID(), dto.getAddressID(), dto.getAddressTypeID()));
+            entity.setBusinessEntity(resolver.resolveBusinessEntity(dto.getBusinessEntityID()));
+            entity.setAddress(resolver.resolveAddress(dto.getAddressID()));
+            entity.setAddressType(resolver.resolveAddressType(dto.getAddressTypeID()));
+        }
+    }
 }
-
-

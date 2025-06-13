@@ -81,7 +81,7 @@ public class BusinessEntityContactServiceImpl implements BusinessEntityContactSe
     })
     @Timed(value = "businessEntityContact.create", description = "Time taken to create business entity contact")
     public BusinessEntityContactDto create(BusinessEntityContactDto dto) {
-        BusinessEntityContact entity = mapper.toEntity(dto, entityResolver);
+        BusinessEntityContact entity = mapper.toEntity(dto);
         entity.setId(new BusinessEntityContactId(dto.getBusinessEntityId(), dto.getPersonId(), dto.getContactTypeId()));
         entity.setRowguid(UUID.randomUUID());
         BusinessEntityContact saved = repository.save(entity);
@@ -100,7 +100,7 @@ public class BusinessEntityContactServiceImpl implements BusinessEntityContactSe
         BusinessEntityContact existing = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("BusinessEntityContact not found with ID: " + id));
 
-        mapper.updateEntityFromDto(dto, existing, entityResolver);
+        mapper.updateEntityFromDto(dto, existing);
         BusinessEntityContact updated = repository.save(existing);
         return mapper.toDto(updated);
     }

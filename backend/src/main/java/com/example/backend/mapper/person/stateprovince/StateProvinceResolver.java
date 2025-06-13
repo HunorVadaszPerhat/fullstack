@@ -65,7 +65,7 @@ public class StateProvinceResolver {
     }
 
     public CountryRegion resolveCountryRegion(String countryRegionCode) {
-        return countryRegionRepository.findById(Integer.getInteger(countryRegionCode))
+        return countryRegionRepository.findById(countryRegionCode)
                 .orElseThrow(() -> new RuntimeException("CountryRegion not found: " + countryRegionCode));
     }
 

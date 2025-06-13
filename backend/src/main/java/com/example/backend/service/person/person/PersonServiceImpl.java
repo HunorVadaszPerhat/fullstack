@@ -100,7 +100,7 @@ public class PersonServiceImpl implements PersonService {
         Person person = personRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Person not found with ID: " + id));
 
-        personMapper.updateFromDto(dto, person);
+        personMapper.updateEntityFromDto(dto, person);
 
         if (dto.getBusinessEntityId() != null) {
             BusinessEntity be = businessEntityRepository.findById(dto.getBusinessEntityId())

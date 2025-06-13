@@ -44,7 +44,7 @@ public class CountryRegionServiceImpl implements CountryRegionService {
     @Cacheable(value = COUNTRY_REGIONS_GET_BY_ID, key = "#code")
     @Timed(value = "countryRegion.get-by-id", description = "Time taken to get country region by code")
     public CountryRegionDto getById(String code) {
-        CountryRegion countryRegion = countryRegionRepository.findById(Integer.getInteger(code))
+        CountryRegion countryRegion = countryRegionRepository.findById(code)
                 .orElseThrow(() -> new EntityNotFoundException("CountryRegion not found with code: " + code));
         return countryRegionMapper.toDto(countryRegion);
     }
@@ -89,7 +89,7 @@ public class CountryRegionServiceImpl implements CountryRegionService {
     })
     @Timed(value = "countryRegion.update", description = "Time taken to update country region")
     public CountryRegionDto update(String code, CountryRegionDto dto) {
-        CountryRegion existing = countryRegionRepository.findById(Integer.getInteger(code))
+        CountryRegion existing = countryRegionRepository.findById(code)
                 .orElseThrow(() -> new EntityNotFoundException("CountryRegion not found with code: " + code));
 
         existing.setName(dto.getName());
@@ -107,7 +107,7 @@ public class CountryRegionServiceImpl implements CountryRegionService {
     })
     @Timed(value = "countryRegion.delete", description = "Time taken to delete country region")
     public void delete(String code) {
-        CountryRegion entity = countryRegionRepository.findById(Integer.getInteger(code))
+        CountryRegion entity = countryRegionRepository.findById(code)
                 .orElseThrow(() -> new EntityNotFoundException("CountryRegion not found with code: " + code));
         countryRegionRepository.delete(entity);
     }

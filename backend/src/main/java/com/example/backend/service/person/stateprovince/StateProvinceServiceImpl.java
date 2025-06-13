@@ -79,7 +79,7 @@ public class StateProvinceServiceImpl implements StateProvinceService {
     })
     @Timed(value = "stateProvince.create", description = "Time taken to create state province")
     public StateProvinceDto create(StateProvinceDto dto) {
-        StateProvince entity = mapper.toEntity(dto, resolver);
+        StateProvince entity = mapper.toEntity(dto);
         entity.setRowguid(UUID.randomUUID());
         StateProvince saved = repository.save(entity);
         return mapper.toDto(saved);
@@ -96,7 +96,7 @@ public class StateProvinceServiceImpl implements StateProvinceService {
         StateProvince entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("StateProvince not found with ID: " + id));
 
-        mapper.updateEntityFromDto(dto, entity, resolver);
+        mapper.updateEntityFromDto(dto, entity);
         StateProvince updated = repository.save(entity);
         return mapper.toDto(updated);
     }

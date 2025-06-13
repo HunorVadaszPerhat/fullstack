@@ -81,7 +81,7 @@ public class BusinessEntityAddressServiceImpl implements BusinessEntityAddressSe
     })
     @Timed(value = "businessEntityAddress.create", description = "Time taken to create business entity address")
     public BusinessEntityAddressDto create(BusinessEntityAddressDto dto) {
-        BusinessEntityAddress entity = mapper.toEntity(dto, resolver);
+        BusinessEntityAddress entity = mapper.toEntity(dto);
         entity.setRowguid(UUID.randomUUID());
 
         BusinessEntityAddress saved = repository.save(entity);
@@ -100,7 +100,7 @@ public class BusinessEntityAddressServiceImpl implements BusinessEntityAddressSe
         BusinessEntityAddress entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("BusinessEntityAddress not found with ID: " + id));
 
-        mapper.updateEntityFromDto(dto, entity, resolver);
+        mapper.updateEntityFromDto(dto, entity);
         entity.setRowguid(dto.getRowguid()); // optional override
 
         BusinessEntityAddress updated = repository.save(entity);

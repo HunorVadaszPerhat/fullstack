@@ -1,33 +1,62 @@
 package com.example.backend.mapper.person.businessentitycontact;
 
+import com.example.backend.domain.model.person.businessentity.BusinessEntity;
 import com.example.backend.domain.model.person.businessentitycontact.BusinessEntityContact;
+import com.example.backend.domain.model.person.businessentitycontact.BusinessEntityContactId;
+import com.example.backend.domain.model.person.contacttype.ContactType;
+import com.example.backend.domain.model.person.person.Person;
 import com.example.backend.dto.person.businessentitycontact.BusinessEntityContactDto;
+import lombok.RequiredArgsConstructor;
 import org.mapstruct.*;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public interface BusinessEntityContactMapper {
+@Component
+@RequiredArgsConstructor
+public class BusinessEntityContactMapper {
 
-    // Entity → DTO
-    @Mapping(source = "id.businessEntityId", target = "businessEntityId")
-    @Mapping(source = "id.personId", target = "personId")
-    @Mapping(source = "id.contactTypeId", target = "contactTypeId")
-    BusinessEntityContactDto toDto(BusinessEntityContact entity);
+    private final BusinessEntityContactResolver resolver;
 
-    // DTO → Entity (with injected relationships)
-    @Mapping(target = "id.businessEntityId", source = "businessEntityId")
-    @Mapping(target = "id.personId", source = "personId")
-    @Mapping(target = "id.contactTypeId", source = "contactTypeId")
-    @Mapping(target = "businessEntity", expression = "java(resolver.resolveBusinessEntity(dto.getBusinessEntityId()))")
-    @Mapping(target = "person", expression = "java(resolver.resolvePerson(dto.getPersonId()))")
-    @Mapping(target = "contactType", expression = "java(resolver.resolveContactType(dto.getContactTypeId()))")
-    BusinessEntityContact toEntity(BusinessEntityContactDto dto, @Context BusinessEntityContactResolver resolver);
+    public BusinessEntityContactDto toDto(BusinessEntityContact entity) {
+        if (entity == null || entity.getId() == null) return null;
 
-    // Update existing entity in-place
-    @Mapping(target = "id.businessEntityId", source = "businessEntityId")
-    @Mapping(target = "id.personId", source = "personId")
-    @Mapping(target = "id.contactTypeId", source = "contactTypeId")
-    @Mapping(target = "businessEntity", expression = "java(resolver.resolveBusinessEntity(dto.getBusinessEntityId()))")
-    @Mapping(target = "person", expression = "java(resolver.resolvePerson(dto.getPersonId()))")
-    @Mapping(target = "contactType", expression = "java(resolver.resolveContactType(dto.getContactTypeId()))")
-    void updateEntityFromDto(BusinessEntityContactDto dto, @MappingTarget BusinessEntityContact entity, @Context BusinessEntityContactResolver resolver);
+        return BusinessEntityContactDto.builder()
+                .businessEntityId(entity.getId().getBusinessEntityId())
+                .personId(entity.getId().getPersonId())
+                .contactTypeId(entity.getId().getContactTypeId())
+                .rowguid(entity.getRowguid())
+                .modifiedDate(entity.getModifiedDate())
+                .build();
+    }
+
+    public BusinessEntityContact toEntity(BusinessEntityContactDto dto) {
+        if (dto == null) return null;
+
+        BusinessEntity businessEntity = resolver.resolveBusinessEntity(dto.getBusinessEntityId());
+        Person person = resolver.resolvePerson(dto.getPersonId());
+        ContactType contactType = resolver.resolveContactType(dto.getContactTypeId());
+
+        return BusinessEntityContact.builder()
+                .id(new BusinessEntityContactId(dto.getBusinessEntityId(), dto.getPersonId(), dto.getContactTypeId()))
+                .businessEntity(businessEntity)
+                .person(person)
+                .contactType(contactType)
+                .rowguid(dto.getRowguid())
+                .modifiedDate(dto.getModifiedDate())
+                .build();
+    }
+
+    public void updateEntityFromDto(BusinessEntityContactDto dto, BusinessEntityContact entity) {
+        if (dto == null || entity == null) return;
+
+        if (dto.getBusinessEntityId() != null && dto.getPersonId() != null && dto.getContactTypeId() != null) {
+            entity.setId(new BusinessEntityContactId(dto.getBusinessEntityId(), dto.getPersonId(), dto.getContactTypeId()));
+            entity.setBusinessEntity(resolver.resolveBusinessEntity(dto.getBusinessEntityId()));
+            entity.setPerson(resolver.resolvePerson(dto.getPersonId()));
+            entity.setContactType(resolver.resolveContactType(dto.getContactTypeId()));
+        }
+
+        if (dto.getRowguid() != null) {
+            entity.setRowguid(dto.getRowguid());
+        }
+    }
 }

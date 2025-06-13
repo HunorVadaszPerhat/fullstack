@@ -5,40 +5,70 @@ import com.example.backend.domain.model.person.stateprovince.StateProvince;
 import com.example.backend.domain.repository.person.stateprovince.StateProvinceRepository;
 import com.example.backend.dto.person.address.AddressDto;
 import jakarta.persistence.EntityNotFoundException;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.ObjectFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public abstract class AddressMapper {
+@Component
+@RequiredArgsConstructor
+public class AddressMapper {
 
-    @Autowired
-    protected StateProvinceRepository stateProvinceRepository;
+    private final StateProvinceRepository stateProvinceRepository;
 
-    @Mapping(source = "stateProvince.stateProvinceId", target = "stateProvinceId")
-    public abstract AddressDto toDto(Address address);
+    public AddressDto toDto(Address entity) {
+        if (entity == null) return null;
 
-    @Mapping(source = "stateProvinceId", target = "stateProvince.stateProvinceId")
-    public abstract Address toEntity(AddressDto addressDto);
+        return AddressDto.builder()
+                .addressId(entity.getAddressId())
+                .addressLine1(entity.getAddressLine1())
+                .addressLine2(entity.getAddressLine2())
+                .city(entity.getCity())
+                .stateProvinceId(
+                        entity.getStateProvince() != null ? entity.getStateProvince().getStateProvinceId() : null
+                )
+                .postalCode(entity.getPostalCode())
+                .spatialLocation(entity.getSpatialLocation())
+                .rowguid(entity.getRowguid())
+                .modifiedDate(entity.getModifiedDate())
+                .build();
+    }
 
-    @Mapping(source = "stateProvinceId", target = "stateProvince.stateProvinceId")
-    public abstract void updateEntityFromDto(AddressDto dto, @MappingTarget Address entity);
+    public Address toEntity(AddressDto dto) {
+        if (dto == null) return null;
 
-    /**
-     * ObjectFactory that tries to fetch StateProvince from DB using the ID in the DTO.
-     * This prevents nulls and ensures only valid relationships are set.
-     */
-    @ObjectFactory
-    protected StateProvince resolveStateProvince(AddressDto dto) {
-        if (dto.getStateProvinceId() == null) {
+        return Address.builder()
+                .addressId(dto.getAddressId())
+                .addressLine1(dto.getAddressLine1())
+                .addressLine2(dto.getAddressLine2())
+                .city(dto.getCity())
+                .postalCode(dto.getPostalCode())
+                .spatialLocation(dto.getSpatialLocation())
+                .rowguid(dto.getRowguid())
+                .modifiedDate(dto.getModifiedDate())
+                .stateProvince(resolveStateProvince(dto.getStateProvinceId()))
+                .build();
+    }
+
+    public void updateEntityFromDto(AddressDto dto, Address entity) {
+        if (dto == null || entity == null) return;
+
+        if (dto.getAddressLine1() != null) entity.setAddressLine1(dto.getAddressLine1());
+        if (dto.getAddressLine2() != null) entity.setAddressLine2(dto.getAddressLine2());
+        if (dto.getCity() != null) entity.setCity(dto.getCity());
+        if (dto.getPostalCode() != null) entity.setPostalCode(dto.getPostalCode());
+        if (dto.getSpatialLocation() != null) entity.setSpatialLocation(dto.getSpatialLocation());
+        if (dto.getRowguid() != null) entity.setRowguid(dto.getRowguid());
+
+        if (dto.getStateProvinceId() != null) {
+            entity.setStateProvince(resolveStateProvince(dto.getStateProvinceId()));
+        }
+    }
+
+    private StateProvince resolveStateProvince(Integer stateProvinceId) {
+        if (stateProvinceId == null) {
             throw new IllegalArgumentException("StateProvinceId must not be null");
         }
 
-        return stateProvinceRepository.findById(dto.getStateProvinceId())
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "StateProvince not found with id: " + dto.getStateProvinceId()
-                ));
+        return stateProvinceRepository.findById(stateProvinceId)
+                .orElseThrow(() -> new EntityNotFoundException("StateProvince not found: " + stateProvinceId));
     }
 }

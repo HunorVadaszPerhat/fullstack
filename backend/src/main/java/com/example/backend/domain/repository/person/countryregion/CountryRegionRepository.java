@@ -6,6 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CountryRegionRepository extends JpaRepository<CountryRegion, Integer> {
+public interface CountryRegionRepository extends JpaRepository<CountryRegion, String> {
     Page<CountryRegion> findAll(Pageable pageable);
 }

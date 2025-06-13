@@ -2,25 +2,89 @@ package com.example.backend.mapper.person.person;
 
 import com.example.backend.domain.model.person.businessentity.BusinessEntity;
 import com.example.backend.domain.model.person.person.Person;
+import com.example.backend.domain.repository.person.businessentity.BusinessEntityRepository;
 import com.example.backend.dto.person.person.PersonDto;
-import org.mapstruct.*;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public interface PersonMapper {
 
-    @Mapping(source = "businessEntity", target = "businessEntityId", qualifiedByName = "extractBusinessEntityId")
-    PersonDto toDto(Person person);
+@Component
+@RequiredArgsConstructor
+public class PersonMapper {
 
-    @Mapping(target = "businessEntity", ignore = true)
-    Person toEntity(PersonDto dto);
+    private final BusinessEntityRepository businessEntityRepository;
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "businessEntity", ignore = true)
-    void updateFromDto(PersonDto dto, @MappingTarget Person entity);
+    public PersonDto toDto(Person entity) {
+        if (entity == null) return null;
 
-    @Named("extractBusinessEntityId")
-    static Integer extractBusinessEntityId(BusinessEntity entity) {
-        return entity != null ? entity.getBusinessEntityId() : null;
+        return PersonDto.builder()
+                .businessEntityId(entity.getBusinessEntity() != null ? entity.getBusinessEntity().getBusinessEntityId() : null)
+                .personType(entity.getPersonType())
+                .nameStyle(entity.getNameStyle())
+                .title(entity.getTitle())
+                .firstName(entity.getFirstName())
+                .middleName(entity.getMiddleName())
+                .lastName(entity.getLastName())
+                .suffix(entity.getSuffix())
+                .emailPromotion(entity.getEmailPromotion())
+                .additionalContactInfo(entity.getAdditionalContactInfo())
+                .demographics(entity.getDemographics())
+                .rowguid(entity.getRowguid())
+                .modifiedDate(entity.getModifiedDate())
+                .build();
+    }
+
+    public Person toEntity(PersonDto dto) {
+        if (dto == null) return null;
+
+        BusinessEntity businessEntity = resolveBusinessEntity(dto.getBusinessEntityId());
+
+        return Person.builder()
+                .businessEntityId(dto.getBusinessEntityId())
+                .businessEntity(businessEntity)
+                .personType(dto.getPersonType())
+                .nameStyle(dto.getNameStyle())
+                .title(dto.getTitle())
+                .firstName(dto.getFirstName())
+                .middleName(dto.getMiddleName())
+                .lastName(dto.getLastName())
+                .suffix(dto.getSuffix())
+                .emailPromotion(dto.getEmailPromotion())
+                .additionalContactInfo(dto.getAdditionalContactInfo())
+                .demographics(dto.getDemographics())
+                .rowguid(dto.getRowguid())
+                .modifiedDate(dto.getModifiedDate())
+                .build();
+    }
+
+    public void updateEntityFromDto(PersonDto dto, Person entity) {
+        if (dto == null || entity == null) return;
+
+        if (dto.getPersonType() != null) entity.setPersonType(dto.getPersonType());
+        if (dto.getNameStyle() != null) entity.setNameStyle(dto.getNameStyle());
+        if (dto.getTitle() != null) entity.setTitle(dto.getTitle());
+        if (dto.getFirstName() != null) entity.setFirstName(dto.getFirstName());
+        if (dto.getMiddleName() != null) entity.setMiddleName(dto.getMiddleName());
+        if (dto.getLastName() != null) entity.setLastName(dto.getLastName());
+        if (dto.getSuffix() != null) entity.setSuffix(dto.getSuffix());
+        if (dto.getEmailPromotion() != null) entity.setEmailPromotion(dto.getEmailPromotion());
+        if (dto.getAdditionalContactInfo() != null) entity.setAdditionalContactInfo(dto.getAdditionalContactInfo());
+        if (dto.getDemographics() != null) entity.setDemographics(dto.getDemographics());
+        if (dto.getRowguid() != null) entity.setRowguid(dto.getRowguid());
+
+        if (dto.getBusinessEntityId() != null) {
+            BusinessEntity businessEntity = resolveBusinessEntity(dto.getBusinessEntityId());
+            entity.setBusinessEntity(businessEntity);
+            entity.setBusinessEntityId(dto.getBusinessEntityId()); // keeps both ID and reference in sync
+        }
+    }
+
+    private BusinessEntity resolveBusinessEntity(Integer id) {
+        if (id == null) throw new IllegalArgumentException("BusinessEntityId must not be null");
+
+        return businessEntityRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("BusinessEntity not found with ID: " + id));
     }
 }
 

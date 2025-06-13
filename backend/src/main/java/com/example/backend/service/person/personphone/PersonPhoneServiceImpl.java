@@ -80,7 +80,7 @@ public class PersonPhoneServiceImpl implements PersonPhoneService {
     })
     @Timed(value = "personPhone.create", description = "Time taken to create person phone")
     public PersonPhoneDto create(PersonPhoneDto dto) {
-        PersonPhone entity = mapper.toEntity(dto, personPhoneResolver);
+        PersonPhone entity = mapper.toEntity(dto);
         entity.setId(new PersonPhoneId(dto.getBusinessEntityId(), dto.getPhoneNumber(), dto.getPhoneNumberTypeId()));
         PersonPhone saved = repository.save(entity);
         return mapper.toDto(saved);
@@ -98,7 +98,7 @@ public class PersonPhoneServiceImpl implements PersonPhoneService {
         PersonPhone existing = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("PersonPhone not found with ID: " + id));
 
-        mapper.updateEntityFromDto(dto, existing, personPhoneResolver);
+        mapper.updateEntityFromDto(dto, existing);
         PersonPhone updated = repository.save(existing);
         return mapper.toDto(updated);
     }
