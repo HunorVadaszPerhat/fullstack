@@ -57,4 +57,14 @@ public final class CacheNames {
     public static final String STATE_PROVINCES_GET_ALL = "state-provinces-get-all";
     public static final String STATE_PROVINCES_GET_BY_ID = "state-provinces-get-by-id";
     public static final String SEARCH_STATE_PROVINCES = "search-state-provinces";
+
+    public static final String DEPARTMENTS_GET_ALL = "departments-get-all";
+    public static final String DEPARTMENTS_GET_BY_ID = "departments-get-by-id";
+    public static final String SEARCH_DEPARTMENTS = "search-departments";
+
+    public static final String EMPLOYEES_GET_ALL = "employees-get-all";
+    public static final String EMPLOYEES_GET_BY_ID = "employees-get-by-id";
+    public static final String SEARCH_EMPLOYEES = "search-employees";
+
+
 }

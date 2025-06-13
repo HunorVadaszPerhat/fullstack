@@ -1,7 +1,7 @@
 package com.example.backend.service.person.phonenumbertype;
 
 import com.example.backend.domain.model.person.phonenumbertype.PhoneNumberType;
-import com.example.backend.domain.repository.person.phonenumbertype.PhoneNumberTypeRepository;
+import com.example.backend.repository.person.phonenumbertype.PhoneNumberTypeRepository;
 import com.example.backend.dto.person.phonenumbertype.PhoneNumberTypeDto;
 import com.example.backend.mapper.person.phonenumbertype.PhoneNumberTypeMapper;
 import com.example.backend.util.response.PagedResponse;

@@ -1,7 +1,7 @@
 package com.example.backend.service.person.contacttype;
 
 import com.example.backend.domain.model.person.contacttype.ContactType;
-import com.example.backend.domain.repository.person.contacttype.ContactTypeRepository;
+import com.example.backend.repository.person.contacttype.ContactTypeRepository;
 import com.example.backend.dto.person.contacttype.ContactTypeDto;
 import com.example.backend.mapper.person.contacttype.ContactTypeMapper;
 import com.example.backend.util.response.PagedResponse;

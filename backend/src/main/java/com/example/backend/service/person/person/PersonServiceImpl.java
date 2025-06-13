@@ -2,8 +2,8 @@ package com.example.backend.service.person.person;
 
 import com.example.backend.domain.model.person.businessentity.BusinessEntity;
 import com.example.backend.domain.model.person.person.Person;
-import com.example.backend.domain.repository.person.businessentity.BusinessEntityRepository;
-import com.example.backend.domain.repository.person.person.PersonRepository;
+import com.example.backend.repository.person.businessentity.BusinessEntityRepository;
+import com.example.backend.repository.person.person.PersonRepository;
 import com.example.backend.dto.person.person.PersonDto;
 import com.example.backend.mapper.person.person.PersonMapper;
 import com.example.backend.util.response.PagedResponse;

@@ -2,8 +2,8 @@ package com.example.backend.service.person.password;
 
 import com.example.backend.domain.model.person.password.Password;
 import com.example.backend.domain.model.person.person.Person;
-import com.example.backend.domain.repository.person.password.PasswordRepository;
-import com.example.backend.domain.repository.person.person.PersonRepository;
+import com.example.backend.repository.person.password.PasswordRepository;
+import com.example.backend.repository.person.person.PersonRepository;
 import com.example.backend.dto.person.password.PasswordDto;
 import com.example.backend.mapper.person.password.PasswordMapper;
 import com.example.backend.util.response.PagedResponse;

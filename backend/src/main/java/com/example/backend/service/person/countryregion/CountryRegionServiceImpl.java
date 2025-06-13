@@ -1,7 +1,7 @@
 package com.example.backend.service.person.countryregion;
 
 import com.example.backend.domain.model.person.countryregion.CountryRegion;
-import com.example.backend.domain.repository.person.countryregion.CountryRegionRepository;
+import com.example.backend.repository.person.countryregion.CountryRegionRepository;
 import com.example.backend.dto.person.countryregion.CountryRegionDto;
 import com.example.backend.mapper.person.countryregion.CountryRegionMapper;
 import com.example.backend.util.response.PagedResponse;

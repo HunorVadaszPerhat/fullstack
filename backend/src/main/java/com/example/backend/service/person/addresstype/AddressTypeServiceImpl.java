@@ -1,7 +1,7 @@
 package com.example.backend.service.person.addresstype;
 
 import com.example.backend.domain.model.person.addresstype.AddressType;
-import com.example.backend.domain.repository.person.addresstype.AddressTypeRepository;
+import com.example.backend.repository.person.addresstype.AddressTypeRepository;
 import com.example.backend.dto.person.addresstype.AddressTypeDto;
 import com.example.backend.mapper.person.addresstype.AddressTypeMapper;
 import com.example.backend.util.response.PagedResponse;

@@ -1,7 +1,7 @@
 package com.example.backend.service.person.stateprovince;
 
 import com.example.backend.domain.model.person.stateprovince.StateProvince;
-import com.example.backend.domain.repository.person.stateprovince.StateProvinceRepository;
+import com.example.backend.repository.person.stateprovince.StateProvinceRepository;
 import com.example.backend.dto.person.stateprovince.StateProvinceDto;
 import com.example.backend.mapper.person.stateprovince.StateProvinceResolver;
 import com.example.backend.mapper.person.stateprovince.StateProvinceMapper;

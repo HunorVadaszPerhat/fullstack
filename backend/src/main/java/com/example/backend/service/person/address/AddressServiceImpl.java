@@ -2,8 +2,8 @@ package com.example.backend.service.person.address;
 
 import com.example.backend.domain.model.person.address.Address;
 import com.example.backend.domain.model.person.stateprovince.StateProvince;
-import com.example.backend.domain.repository.person.address.AddressRepository;
-import com.example.backend.domain.repository.person.stateprovince.StateProvinceRepository;
+import com.example.backend.repository.person.address.AddressRepository;
+import com.example.backend.repository.person.stateprovince.StateProvinceRepository;
 import com.example.backend.dto.person.address.AddressDto;
 import com.example.backend.mapper.person.address.AddressMapper;
 import com.example.backend.util.response.PagedResponse;

@@ -2,7 +2,7 @@ package com.example.backend.service.person.personphone;
 
 import com.example.backend.domain.model.person.personphone.PersonPhone;
 import com.example.backend.domain.model.person.personphone.PersonPhoneId;
-import com.example.backend.domain.repository.person.personphone.PersonPhoneRepository;
+import com.example.backend.repository.person.personphone.PersonPhoneRepository;
 import com.example.backend.dto.person.personphone.PersonPhoneDto;
 import com.example.backend.mapper.person.personphone.PersonPhoneResolver;
 import com.example.backend.mapper.person.personphone.PersonPhoneMapper;

@@ -5,11 +5,11 @@ import com.example.backend.domain.model.person.addresstype.AddressType;
 import com.example.backend.domain.model.person.businessentity.BusinessEntity;
 import com.example.backend.domain.model.person.contacttype.ContactType;
 import com.example.backend.domain.model.person.person.Person;
-import com.example.backend.domain.repository.person.address.AddressRepository;
-import com.example.backend.domain.repository.person.addresstype.AddressTypeRepository;
-import com.example.backend.domain.repository.person.businessentity.BusinessEntityRepository;
-import com.example.backend.domain.repository.person.contacttype.ContactTypeRepository;
-import com.example.backend.domain.repository.person.person.PersonRepository;
+import com.example.backend.repository.person.address.AddressRepository;
+import com.example.backend.repository.person.addresstype.AddressTypeRepository;
+import com.example.backend.repository.person.businessentity.BusinessEntityRepository;
+import com.example.backend.repository.person.contacttype.ContactTypeRepository;
+import com.example.backend.repository.person.person.PersonRepository;
 import org.springframework.stereotype.Component;
 
 @Component

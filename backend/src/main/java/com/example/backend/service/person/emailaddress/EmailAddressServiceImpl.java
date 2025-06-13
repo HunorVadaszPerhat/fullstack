@@ -1,10 +1,9 @@
 package com.example.backend.service.person.emailaddress;
 
 import com.example.backend.domain.model.person.emailaddress.EmailAddress;
-import com.example.backend.domain.model.person.emailaddress.EmailAddressId;
 import com.example.backend.domain.model.person.person.Person;
-import com.example.backend.domain.repository.person.emailaddress.EmailAddressRepository;
-import com.example.backend.domain.repository.person.person.PersonRepository;
+import com.example.backend.repository.person.emailaddress.EmailAddressRepository;
+import com.example.backend.repository.person.person.PersonRepository;
 import com.example.backend.dto.person.emailaddress.EmailAddressDto;
 import com.example.backend.dto.person.emailaddress.EmailAddressIdDto;
 import com.example.backend.mapper.person.emailaddress.EmailAddressMapper;

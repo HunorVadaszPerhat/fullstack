@@ -3,9 +3,9 @@ package com.example.backend.mapper.person.businessentityaddress;
 import com.example.backend.domain.model.person.address.Address;
 import com.example.backend.domain.model.person.addresstype.AddressType;
 import com.example.backend.domain.model.person.businessentity.BusinessEntity;
-import com.example.backend.domain.repository.person.address.AddressRepository;
-import com.example.backend.domain.repository.person.addresstype.AddressTypeRepository;
-import com.example.backend.domain.repository.person.businessentity.BusinessEntityRepository;
+import com.example.backend.repository.person.address.AddressRepository;
+import com.example.backend.repository.person.addresstype.AddressTypeRepository;
+import com.example.backend.repository.person.businessentity.BusinessEntityRepository;
 import org.springframework.stereotype.Component;
 
 @Component

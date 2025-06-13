@@ -2,7 +2,7 @@ package com.example.backend.mapper.person.address;
 
 import com.example.backend.domain.model.person.address.Address;
 import com.example.backend.domain.model.person.stateprovince.StateProvince;
-import com.example.backend.domain.repository.person.stateprovince.StateProvinceRepository;
+import com.example.backend.repository.person.stateprovince.StateProvinceRepository;
 import com.example.backend.dto.person.address.AddressDto;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;

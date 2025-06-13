@@ -2,7 +2,7 @@ package com.example.backend.service.person.businessentityaddress;
 
 import com.example.backend.domain.model.person.businessentityaddress.BusinessEntityAddress;
 import com.example.backend.domain.model.person.businessentityaddress.BusinessEntityAddressId;
-import com.example.backend.domain.repository.person.businessentityaddress.BusinessEntityAddressRepository;
+import com.example.backend.repository.person.businessentityaddress.BusinessEntityAddressRepository;
 import com.example.backend.dto.person.businessentityaddress.BusinessEntityAddressDto;
 import com.example.backend.mapper.person.businessentityaddress.BusinessEntityAddressMapper;
 import com.example.backend.mapper.person.businessentityaddress.BusinessEntityAddressResolver;
