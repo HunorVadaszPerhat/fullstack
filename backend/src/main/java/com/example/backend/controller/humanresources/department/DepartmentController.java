@@ -6,6 +6,7 @@ import com.example.backend.util.response.PagedResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/departments")
 @RequiredArgsConstructor
+@Tag(name = "Department", description = "Department management APIs")
 public class DepartmentController {
 
     private final DepartmentService service;

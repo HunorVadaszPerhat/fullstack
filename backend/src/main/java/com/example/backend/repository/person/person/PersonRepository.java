@@ -1,11 +1,7 @@
 package com.example.backend.repository.person.person;
 
-import com.example.backend.domain.model.person.password.Password;
 import com.example.backend.domain.model.person.person.Person;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PersonRepository extends JpaRepository<Person, Integer> {
-    Page<Person> findAll(Pageable pageable);
 }

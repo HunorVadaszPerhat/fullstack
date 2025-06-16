@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/address")
 @RequiredArgsConstructor
+@Tag(name = "Address", description = "Address management APIs")
 public class AddressController {
 
     private final AddressService addressService;

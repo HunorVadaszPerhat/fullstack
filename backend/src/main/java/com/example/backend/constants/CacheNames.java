@@ -66,5 +66,54 @@ public final class CacheNames {
     public static final String EMPLOYEES_GET_BY_ID = "employees-get-by-id";
     public static final String SEARCH_EMPLOYEES = "search-employees";
 
+    public static final String SHIFTS_GET_ALL = "shifts-get-all";
+    public static final String SHIFTS_GET_BY_ID = "shifts-get-by-id";
+    public static final String SEARCH_SHIFTS = "search-shifts";
+
+    public static final String JOB_CANDIDATES_GET_ALL = "job-candidates-get-all";
+    public static final String JOB_CANDIDATES_GET_BY_ID = "job-candidates-get-by-id";
+    public static final String SEARCH_JOB_CANDIDATES = "search-job-candidates";
+
+    public static final String EMPLOYEE_PAY_HISTORIES_GET_ALL = "employee-pay-histories-get-all";
+    public static final String EMPLOYEE_PAY_HISTORIES_GET_BY_ID = "employee-pay-histories-get-by-id";
+    public static final String SEARCH_EMPLOYEE_PAY_HISTORIES = "search-employee-pay-histories";
+
+    public static final String EMPLOYEE_DEPARTMENT_HISTORY_GET_ALL = "employee-dept-history-get-all";
+    public static final String EMPLOYEE_DEPARTMENT_HISTORY_GET_BY_ID = "employee-dept-history-get-by-id";
+    public static final String SEARCH_EMPLOYEE_DEPARTMENT_HISTORY = "employee-dept-history-search";
+
+    public static final String BILL_OF_MATERIALS_GET_ALL = "bill-of-materials-get-all";
+    public static final String BILL_OF_MATERIALS_GET_BY_ID = "bill-of-materials-get-by-id";
+    public static final String SEARCH_BILL_OF_MATERIALS = "search-bill-of-materials";
+
+    public static final String CULTURES_GET_ALL = "cultures-get-all";
+    public static final String CULTURES_GET_BY_ID = "cultures-get-by-id";
+    public static final String SEARCH_CULTURES = "search-cultures";
+
+    public static final String DOCUMENTS_GET_ALL = "documents-get-all";
+    public static final String DOCUMENTS_GET_BY_ID = "documents-get-by-id";
+    public static final String SEARCH_DOCUMENTS = "search-documents";
+
+    public static final String ILLUSTRATIONS_GET_ALL = "illustrations-get-all";
+    public static final String ILLUSTRATIONS_GET_BY_ID = "illustrations-get-by-id";
+    public static final String SEARCH_ILLUSTRATIONS = "search-illustrations";
+
+    public static final String LOCATIONS_GET_ALL = "locations-get-all";
+    public static final String LOCATIONS_GET_BY_ID = "locations-get-by-id";
+    public static final String SEARCH_LOCATIONS = "search-locations";
+
+    public static final String PRODUCTS_GET_ALL = "products-get-all";
+    public static final String PRODUCTS_GET_BY_ID = "products-get-by-id";
+    public static final String SEARCH_PRODUCTS = "search-products";
+
+    public static final String PRODUCT_CATEGORIES_GET_ALL = "product-categories-get-all";
+    public static final String PRODUCT_CATEGORIES_GET_BY_ID = "product-categories-get-by-id";
+    public static final String SEARCH_PRODUCT_CATEGORIES = "search-product-categories";
+
+    public static final String PRODUCT_COST_HISTORY_GET_ALL = "product-cost-history-get-all";
+    public static final String PRODUCT_COST_HISTORY_GET_BY_ID = "product-cost-history-get-by-id";
+    public static final String SEARCH_PRODUCT_COST_HISTORY = "search-product-cost-history";
+
+
 
 }
