@@ -114,6 +114,12 @@ public final class CacheNames {
     public static final String PRODUCT_COST_HISTORY_GET_BY_ID = "product-cost-history-get-by-id";
     public static final String SEARCH_PRODUCT_COST_HISTORY = "search-product-cost-history";
 
+    public static final String PRODUCT_DESCRIPTIONS_GET_ALL = "product-descriptions-get-all";
+    public static final String PRODUCT_DESCRIPTIONS_GET_BY_ID = "product-descriptions-get-by-id";
+    public static final String SEARCH_PRODUCT_DESCRIPTIONS = "search-product-descriptions";
+
+
+
 
 
 }
