@@ -118,7 +118,9 @@ public final class CacheNames {
     public static final String PRODUCT_DESCRIPTIONS_GET_BY_ID = "product-descriptions-get-by-id";
     public static final String SEARCH_PRODUCT_DESCRIPTIONS = "search-product-descriptions";
 
-
+    public static final String PRODUCT_INVENTORIES_GET_ALL = "product-inventories-get-all";
+    public static final String PRODUCT_INVENTORIES_GET_BY_ID = "product-inventories-get-by-id";
+    public static final String SEARCH_PRODUCT_INVENTORIES = "search-product-inventories";
 
 
 
