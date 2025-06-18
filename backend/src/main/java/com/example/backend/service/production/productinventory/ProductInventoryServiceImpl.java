@@ -37,7 +37,7 @@ public class ProductInventoryServiceImpl implements ProductInventoryService {
 
     @Override
     @Caching(evict = {
-            @CacheEvict(value = PRODUCT_INVENTORIES_GET_ALL, key = "#dto.productId + '-' + #dto.locationId", condition = "#result != null"),
+            @CacheEvict(value = PRODUCT_INVENTORIES_GET_BY_ID, key = "#dto.productId + '-' + #dto.locationId", condition = "#result != null"),
             @CacheEvict(value = PRODUCT_INVENTORIES_GET_ALL, allEntries = true),
             @CacheEvict(value = SEARCH_PRODUCT_INVENTORIES, allEntries = true)
     })

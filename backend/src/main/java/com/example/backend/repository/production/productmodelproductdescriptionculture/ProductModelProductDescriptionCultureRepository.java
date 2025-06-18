@@ -1,0 +1,9 @@
+package com.example.backend.repository.production.productmodelproductdescriptionculture;
+
+import com.example.backend.domain.model.production.productmodelproductdescriptionculture.ProductModelProductDescriptionCulture;
+import com.example.backend.domain.model.production.productmodelproductdescriptionculture.ProductModelProductDescriptionCultureId;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProductModelProductDescriptionCultureRepository extends JpaRepository<ProductModelProductDescriptionCulture, ProductModelProductDescriptionCultureId> {
+}
+

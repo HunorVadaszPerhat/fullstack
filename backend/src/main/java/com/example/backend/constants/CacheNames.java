@@ -122,6 +122,33 @@ public final class CacheNames {
     public static final String PRODUCT_INVENTORIES_GET_BY_ID = "product-inventories-get-by-id";
     public static final String SEARCH_PRODUCT_INVENTORIES = "search-product-inventories";
 
+    public static final String PRODUCT_LIST_PRICE_HISTORY_GET_ALL = "product-list-price-history-get-all";
+    public static final String PRODUCT_LIST_PRICE_HISTORY_GET_BY_ID = "product-list-price-history-get-by-id";
+    public static final String SEARCH_PRODUCT_LIST_PRICE_HISTORY = "search-product-list-price-history";
+
+    public static final String PRODUCT_MODELS_GET_ALL = "product-models-get-all";
+    public static final String PRODUCT_MODELS_GET_BY_ID = "product-models-get-by-id";
+    public static final String SEARCH_PRODUCT_MODELS = "search-product-models";
+
+    public static final String PRODUCT_MODEL_ILLUSTRATIONS_GET_ALL = "product-model-illustrations-get-all";
+    public static final String PRODUCT_MODEL_ILLUSTRATIONS_GET_BY_ID = "product-model-illustrations-get-by-id";
+    public static final String SEARCH_PRODUCT_MODEL_ILLUSTRATIONS = "search-product-model-illustrations";
+
+    public static final String PRODUCT_MODEL_DESCRIPTION_CULTURES_GET_ALL = "product-model-description-cultures-get-all";
+    public static final String PRODUCT_MODEL_DESCRIPTION_CULTURES_GET_BY_ID = "product-model-description-cultures-get-by-id";
+    public static final String SEARCH_PRODUCT_MODEL_DESCRIPTION_CULTURES = "search-product-model-description-cultures";
+
+    public static final String PRODUCT_PHOTOS_GET_ALL = "product-photos-get-all";
+    public static final String PRODUCT_PHOTOS_GET_BY_ID = "product-photos-get-by-id";
+    public static final String SEARCH_PRODUCT_PHOTOS = "search-product-photos";
+
+
+
+
+
+
+
+
 
 
 }
